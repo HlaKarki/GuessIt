@@ -1,0 +1,10 @@
+.home-begin {
+    border: 5px solid black;
+    border-radius: 10px;
+    text-align: center;
+    width: 500px;
+
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
