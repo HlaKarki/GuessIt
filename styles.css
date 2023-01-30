@@ -47,7 +47,7 @@
     float: right;
 }
 
-.user-input, .random-words{
+.user-input, .random-words, .erase-button{
     position: absolute;
     top: 50%;
     left: 50%;
@@ -66,6 +66,7 @@
 }
 
 .random-words {
+    font-family: "IBM Plex Mono", monospace;
     font-size: 24px;
     padding-top: 50px;
     margin-top: 20px;
@@ -90,20 +91,35 @@
     margin-left: -100px;
 }
 
+#guessit {
+    font-family: "IBM Plex Mono", monospace;
+}
+
+#erase {
+    font-family: "IBM Plex Mono", monospace;
+}
+
 .erase-button {
-    position: absolute;
-    top: 100%;
-    left: 65%;
-    margin-top: -50px;
-    margin-left: -100px;
+    padding-top: 50px;
+    margin-top: 137px;
+    margin-left: 55px;
 }
 
 #answer_container {
+    border: 2px solid black;
+    max-width: 200px;
+    height: max-content;
+    min-height: 200px;
     display: block;
     position: relative;
-    left: 35%;
+    /*left: 35%;*/
     align-items: center;
     margin-top: 30px;
+    margin-left: 10px;
+    padding-left: 20px;
+}
+#answer_container h3 {
+    font-family: "IBM Plex Mono", monospace;
 }
 #answer_container div {
     margin-bottom: 25px;
