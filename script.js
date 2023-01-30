@@ -8,8 +8,11 @@ if (currentUrl.indexOf("/settings.html")!=-1) {
     })
 
     var word_length = document.getElementById("word-length-number")
+    word_length.addEventListener("input", function(){
+        console.log(word_length.value)
+        localStorage.setItem("word-length", word_length.value)
+    })
 
-    localStorage.setItem("word-length", word_length)
 }
 
 
@@ -27,8 +30,10 @@ else if (currentUrl.indexOf("/about.html")!=1) {
     var erase = document.getElementById("erase")
     var guessedWord = ""
 
+
     var attempts_left = localStorage.getItem("attempts");
-    var boo = localStorage.getItem("word-length")
+    var word_length = localStorage.getItem("word-length")
+    console.log(word_length)
     gameplay_attempts_left.textContent = "Attempts left: " + attempts_left
 
     if(!buttons.length){
@@ -57,29 +62,44 @@ else if (currentUrl.indexOf("/about.html")!=1) {
     }
 
     guess.addEventListener("click", function (){
-        attempts_left = (parseInt(attempts_left)-1).toString()
-        gameplay_attempts_left.textContent = "Attempts left: " + attempts_left
-        if(attempts_left == 0) {
+        var lean = true;
+        if (attempts_left < 1) {
             alert("You have used all the attempts!")
         }
-        for (var j = 0; j < user_input_A.length; j++) {
-            if (user_input_A[j].textContent == "_") {
-                alert("Please select all the letters of the word first")
-                break;
+        else {
+            for (let j = 0; j < word_length; j++) {
+                if (user_input_A[j].textContent == "_") {
+                    alert("Please select all the letters of the word first")
+                    lean = false;
+                    break;
+                }
+                guessedWord += user_input_A[j].textContent
             }
-            guessedWord += user_input_A[j].textContent
+            if(attempts_left <= 1) {
+                alert("You have used all the attempts!")
+            }
+            if (lean && attempts_left >0) {
+                attempts_left = (parseInt(attempts_left)-1).toString()
+                gameplay_attempts_left.textContent = "Attempts left: " + attempts_left
+            }
         }
         console.log(guessedWord)
     })
 
     erase.addEventListener("click", function (){
-        for (var j = user_input_A.length-1; j > -1; j--) {
+        for (let j = user_input_A.length-1; j > -1; j--) {
             if (user_input_A[j].textContent !== "_") {
                 user_input_A[j].textContent = "_"
                 break;
             }
         }
     })
+
+    for (let j = 0; j < user_input_A.length; j++) {
+        if (j>=word_length) {
+            user_input_A[j].style.display = "none";
+        }
+    }
 }
 
 
