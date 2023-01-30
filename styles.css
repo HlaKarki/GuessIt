@@ -1,10 +1,29 @@
-.home-begin {
-    border: 5px solid black;
-    border-radius: 10px;
-    text-align: center;
-    width: 500px;
+.html {
 
+}
+
+.body{
+    margin: 0px;
+    font-family: 'IBM Plex Mono', monospace;
+}
+.home-begin {
     position: absolute;
     top: 50%;
-    transform: translateY(-50%);
+    left: 50%;
+    margin-top: -50px;
+    margin-left: -100px;
+    width: 200px;
+    /*height: 100px;*/
+
+    border: 10px solid black;
+    border-radius: 5px;
+    text-align: center;
+}
+
+#begin-button {
+    text-decoration: none;
+    color: black;
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 600;
+    font-size: 40px;
 }
