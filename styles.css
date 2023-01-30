@@ -6,26 +6,35 @@
     margin: 0px;
     font-family: 'IBM Plex Mono', monospace;
 }
-.home-begin {
+
+.home-begin, .home-settings, .home-about, .settings {
     position: absolute;
     top: 50%;
     left: 50%;
     margin-top: -50px;
     margin-left: -100px;
     width: 200px;
-    /*height: 100px;*/
 
     border: 10px solid black;
     border-radius: 5px;
     text-align: center;
 }
 
-#begin-button {
+#begin-button, #settings-button, #about-button {
     text-decoration: none;
     color: black;
     font-family: 'IBM Plex Mono', monospace;
     font-weight: 600;
     font-size: 40px;
+}
+
+/********************* styling for gameplay page *******************/
+.home-settings {
+    margin-top: 50px;
+}
+
+.home-about {
+    margin-top: 150px;
 }
 
 .topnav {
@@ -63,10 +72,52 @@
     flex-wrap: wrap;
     justify-content: center;
     width: 150px;
-    /*border: 3px solid red;*/
 }
 
 .random-words button {
     padding: 5px;
     margin: 2px;
 }
+
+.guess-button {
+    position: absolute;
+    top: 64%;
+    left: 75%;
+    margin-top: -50px;
+    margin-left: -100px;
+}
+
+.erase-button {
+    position: absolute;
+    top: 100%;
+    left: 65%;
+    margin-top: -50px;
+    margin-left: -100px;
+}
+/*******************************************************
+/************* styles for settings page ****************/
+.settings {
+    border: 2px solid black;
+    display: block;
+    padding: 20px;
+    text-align: left;
+    font-family: "IBM Plex Mono", monospace;
+    width: 250px;
+}
+.settings div {
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+.settings-attempts input, .settings-word-length input {
+    width: 50px;
+}
+
+.settings-attempts label > input{
+    margin-left: 18px;
+}
+
+.settings-word-length label > input {
+    margin-left: 65px;
+}
+
