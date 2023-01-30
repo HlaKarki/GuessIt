@@ -58,7 +58,7 @@
     margin-left: -115px;
 }
 
-.user-input label, .answered_input label{
+.user-input label, #answer_container label{
     font-family: "IBM Plex Mono", monospace;
     border: 1px solid purple;
     border-radius: 5px;
@@ -98,14 +98,18 @@
     margin-left: -100px;
 }
 
-.answered_input {
+#answer_container {
+    display: block;
     position: relative;
     left: 35%;
     align-items: center;
     margin-top: 30px;
 }
+#answer_container div {
+    margin-bottom: 25px;
+}
 
-.answered_input label {
+#answer_container label {
     margin-right: 5px;
     padding: 10px;
 }
