@@ -133,10 +133,13 @@ else if (currentUrl.indexOf("/about.html")!=1) {
                     const label = document.createElement("label")
                     label.textContent = userAnswer[i]
                     if (label.textContent === chosenWord[i]) {
-                        console.log("this letter was correct")
                         label.style.background = "green";
 
                     }
+                    else if (guessedWord.indexOf(chosenWord[i]) !== -1) {
+                        label.style.background = "yellow"
+                    }
+
                     div.appendChild(label)
                 }
                 answerDiv.appendChild(div)
