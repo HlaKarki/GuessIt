@@ -3,24 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
     <title>Guessit</title>
-
-    <link rel="stylesheet" href="styles.css" defer>
-    <script src="script.js" defer></script>
-
     <!--    font link-->
-    <link rel="preconnect" href="https://fonts.googleapis.com" defer>
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin defer>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@200;400;700&display=swap" rel="stylesheet" defer>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@200;400;700&display=swap" rel="stylesheet">
+
+    <!--    symbol link-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 </head>
 <body>
-<div class="topnav">
+<script src="script.js" defer></script>
+<div class="top-nav settings-settings">
     <label id="gameplay-attempts-left">Attempts left:</label>
-    <button id="new-word-button">New word</button>
+    <button id="new-word-button" class="btn">Reset<i class="fa fa-refresh"></i></button>
+    <button id="gameplay-home-button" class="btn"><i class="fa fa-home"></i></button>
 </div>
 
 <div id="answer_container">
-
+    <h3>Attempt history</h3>
 </div>
 
 <div class="user-input">
@@ -35,6 +38,7 @@
     <button id="guessit">Guess</button>
 </div>
 
+<div class="divider"></div>
 <div class="random-words">
     <button class="input">1</button>
     <button class="input">2</button>
