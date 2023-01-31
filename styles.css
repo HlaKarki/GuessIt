@@ -8,6 +8,12 @@ body{
     font-family: 'IBM Plex Mono', monospace;
 }
 
+.game-name {
+    text-align: center;
+    margin-top: 8%;
+    font-size: 100px;
+}
+
 .home-begin, .home-settings, .home-about, .settings {
     position: absolute;
     top: 50%;
