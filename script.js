@@ -3,8 +3,13 @@ let word_length;
 let alphabets;
 let attempt_setting;
 let chosenWord = "";
+let currentWord = "";
+let userAnswer = ""
+
 //***************** settings page js **************************
 if (currentUrl.indexOf("/settings.html")!=-1) {
+    const newWordButton = document.getElementById("new-word-button")
+    const gameHomeButton = document.getElementById("gameplay-home-button")
     const allowed_attempts = document.getElementById("allowed-attempts-number");
     allowed_attempts.addEventListener("input", function(){
         localStorage.setItem("attempts", allowed_attempts.value)
@@ -15,6 +20,20 @@ if (currentUrl.indexOf("/settings.html")!=-1) {
         console.log(word_length.value)
         localStorage.setItem("word-length", word_length.value)
     })
+
+    newWordButton.addEventListener("click", function() {
+        attempts_left = reset(attempts_left, gameplay_attempts_left)
+        updateRandomList(buttons)
+
+    })
+
+    for (let j = 0; j < user_input_A.length; j++) {
+        if (j>=word_length) {
+            user_input_A[j].style.display = "none";
+        }
+    }
+
+    gameHomeButton.addEventListener("click", goBackHome)
 
 }
 
@@ -28,6 +47,7 @@ else if (currentUrl.indexOf("/about.html")!=1) {
     const user_input_container = document.querySelector(".user-input");
     const user_input_A = user_input_container.querySelectorAll("label");
     const newWordButton = document.getElementById("new-word-button")
+    const gameHomeButton = document.getElementById("gameplay-home-button")
 
     const guess = document.getElementById("guessit");
     const erase = document.getElementById("erase");
@@ -65,6 +85,7 @@ else if (currentUrl.indexOf("/about.html")!=1) {
                         break;
                     }
                 }
+                this.textContent = "-"
             });
         }
     }
@@ -90,10 +111,11 @@ else if (currentUrl.indexOf("/about.html")!=1) {
                 }
             }
             if (lean && attempts_left >0) {
-                if (userAnswer === chosenWord) {
+                if (guessedWord === chosenWord) {
+                    addOrNot = false
+                    currentWord = ""
                     let result = confirm("Amazing!\nYou've successfully guessed the word!It was indeed \"" + chosenWord.toUpperCase()+"\"!\nWould you like to try a new word?")
                     if (result === true ){
-                        addOrNot = false
                         attempts_left = reset(attempts_left, gameplay_attempts_left)
                         updateRandomList(buttons)
                         userAnswer = ""
@@ -104,9 +126,10 @@ else if (currentUrl.indexOf("/about.html")!=1) {
                 }
                 else {
                     if(attempts_left <= 1) {
+                        addOrNot = false
+                        currentWord = ""
                         let result = confirm("Sorry :( You used up all the attempts.\nThe word to be guessed was \"" + chosenWord.toUpperCase()+"\"\nWould you like to try guessing another word?")
                         if (result === true) {
-                            addOrNot = false
                             attempts_left = reset(attempts_left, gameplay_attempts_left)
                             updateRandomList(buttons)
                             userAnswer = ""
@@ -117,12 +140,17 @@ else if (currentUrl.indexOf("/about.html")!=1) {
                     }
                 }
                 for (let j = 0; j < word_length; j++) {
-                    user_input_A[j].textContent = "_"
+                    if(user_input_A[j].style.background !== "green"){
+                        user_input_A[j].textContent = "_"
+                    }
+                    else {
+                        userAnswer[j] = chosenWord[j]
+                    }
                 }
-
             }
 
             if (addOrNot) {
+                console.log("UserAnswer:", userAnswer)
                 attempts_left = (parseInt(attempts_left)-1).toString()
                 gameplay_attempts_left.textContent = "Attempts left: " + attempts_left
 
@@ -131,16 +159,25 @@ else if (currentUrl.indexOf("/about.html")!=1) {
 
                 for (let i = 0; i < word_length; i++) {
                     const label = document.createElement("label")
-                    label.textContent = userAnswer[i]
+                    label.textContent = guessedWord[i]
                     if (label.textContent === chosenWord[i]) {
                         label.style.background = "green";
-
+                        alphabets[alphabets.indexOf(guessedWord[i])] = "_"
+                        updateRandomList(buttons)
+                        user_input_A[i].textContent = chosenWord[i]
+                        user_input_A[i].style.background = "green";
+                        currentWord += chosenWord[i]
                     }
-                    else if (guessedWord.indexOf(chosenWord[i]) !== -1) {
+                    else if (chosenWord.indexOf(userAnswer[i]) !== -1) {
                         label.style.background = "yellow"
                     }
-
+                    else {
+                        alphabets[alphabets.indexOf(userAnswer[i])] = "_"
+                        updateRandomList(buttons)
+                    }
                     div.appendChild(label)
+
+
                 }
                 answerDiv.appendChild(div)
                 userAnswer = ""
@@ -173,7 +210,7 @@ else if (currentUrl.indexOf("/about.html")!=1) {
         }
     }
 
-
+    gameHomeButton.addEventListener("click", goBackHome)
 }
 
 function shuffleArray(array) {
@@ -224,7 +261,25 @@ function reset(attempts_left, gameplay_attempts_left) {
     while (deleteThis.firstChild) {
         deleteThis.removeChild(deleteThis.firstChild);
     }
+    const h3 = document.createElement("h3");
+    const text = document.createTextNode("Attempt history");
+    h3.appendChild(text)
+    deleteThis.append(h3)
+
+    alphabets = ["a", "b", "d", "e", "f", "g",
+        "h", "i", "k", "l", "m", "n",
+        "o", "p", "r", "s", "t", "w"];
+    alphabets = shuffleArray(alphabets)
     chosenWord = generateWord()
+
+    const user_input_container = document.querySelector(".user-input");
+    const user_input_A = user_input_container.querySelectorAll("label");
+    for (let i = 0; i < chosenWord.length; i++) {
+        user_input_A[i].textContent = "_"
+        user_input_A[i].style.background = "none";
+    }
+
+
 
     return attempts_left
 }
@@ -236,6 +291,6 @@ function goBackHome() {
 
 function updateRandomList(buttons){
     for (let i = 0; i < buttons.length; i++) {
-        buttons[i].textContent = alphabets[i]
+        buttons[i].textContent = alphabets[i].toLowerCase()
     }
 }
