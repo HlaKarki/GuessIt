@@ -1,7 +1,9 @@
-.html {
+html {
 }
 
-.body{
+body{
+    /*background-color: #cca3a3;*/
+    background-color: rgba(205, 92, 92, 0.72);
     margin: 0px;
     font-family: 'IBM Plex Mono', monospace;
 }
@@ -22,7 +24,6 @@
 #begin-button, #settings-button, #about-button {
     text-decoration: none;
     color: black;
-    font-family: 'IBM Plex Mono', monospace;
     font-weight: 600;
     font-size: 40px;
 }
@@ -36,17 +37,36 @@
     margin-top: 150px;
 }
 
-.topnav {
+.top-nav {
     display: flex;
     justify-content: space-between;
-    font-family: "IBM Plex Mono", monospace;
+    font-size: 20px;
+    font-weight: 700;
 }
 
-.topnav button {
+#new-word-button, #gameplay-home-button {
+    background-color: #aaec78;
+    border-radius: 5px;
+    border: none;
     font-family: "IBM Plex Mono", monospace;
-    float: right;
+    width: 70px;
+    position: relative;
+    left: 33%;
+}
+#new-word-button i{
+    margin-left: 5px;
+}
+.top-nav button:hover {
+    cursor: pointer;
 }
 
+#gameplay-home-button {
+    width: 50px;
+    padding: 10px;
+    position: relative;
+    left: 0px;
+    font-size: 20px;
+}
 .user-input, .random-words, .erase-button{
     position: absolute;
     top: 50%;
@@ -65,44 +85,69 @@
     padding: 15px;
 }
 
+.divider {
+    border: 1px solid purple;
+    margin-top: 20px;
+    margin-left: 35%;
+    margin-right: 35%;
+}
 .random-words {
-    font-family: "IBM Plex Mono", monospace;
     font-size: 24px;
     padding-top: 50px;
     margin-top: 20px;
-    margin-left: -100px;
+    margin-left: -110px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    width: 150px;
+    width: 180px;
 }
 
 .random-words button {
     font-family: "IBM Plex Mono", monospace;
-    padding: 5px;
-    margin: 2px;
-}
+    padding: 8px;
+    margin: 5px;
 
+    border: none;
+    border-radius: 5px;
+    background-color: #aaec78;
+}
+.random-words button:hover{
+    cursor: pointer;
+}
 .guess-button {
     position: absolute;
-    top: 64%;
-    left: 75%;
-    margin-top: -50px;
-    margin-left: -100px;
+    top: 50%;
+    left: 50%;
+    margin-top: 15px;
+    margin-left: 100px;
 }
 
 #guessit {
     font-family: "IBM Plex Mono", monospace;
+    border: none;
+    border-radius: 5px;
+    background-color: #aaec78;
+    padding: 10px;
+}
+#guessit:hover{
+    cursor: pointer;
+}
+
+.erase-button{
+    margin-top: 215px;
+    margin-left: 130px;
 }
 
 #erase {
     font-family: "IBM Plex Mono", monospace;
+    padding: 5px 10px 5px 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #aaec78;
 }
 
-.erase-button {
-    padding-top: 50px;
-    margin-top: 137px;
-    margin-left: 55px;
+#erase:hover{
+    cursor: pointer;
 }
 
 #answer_container {
@@ -112,15 +157,17 @@
     min-height: 200px;
     display: block;
     position: relative;
-    /*left: 35%;*/
     align-items: center;
     margin-top: 30px;
     margin-left: 10px;
     padding-left: 20px;
 }
 #answer_container h3 {
-    font-family: "IBM Plex Mono", monospace;
+    font-weight: 500;
+    margin-top: 5px;
+    font-style: italic;
 }
+
 #answer_container div {
     margin-bottom: 25px;
 }
@@ -129,14 +176,15 @@
     margin-right: 5px;
     padding: 10px;
 }
+
 /*******************************************************
 /************* styles for settings page ****************/
+
 .settings {
     border: 2px solid black;
     display: block;
     padding: 20px;
     text-align: left;
-    font-family: "IBM Plex Mono", monospace;
     width: 250px;
 }
 .settings div {
@@ -156,3 +204,25 @@
     margin-left: 65px;
 }
 
+.settings-settings {
+    margin-top: 0px;
+    background-color: indianred;
+    padding: 10px;
+}
+
+/*******************************************************
+/************* styles for about page ****************/
+.about{
+    margin-left: 10px;
+}
+
+h4 {
+    text-decoration: underline;
+}
+
+p a{
+    text-decoration: none;
+    border-radius: 5px;
+    color: white;
+    background-color: #5e5c5c;
+}
