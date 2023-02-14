@@ -1,4 +1,5 @@
 let currentUrl = window.location.href;
+let count = 0
 let word_length = '4'
 let attempt_setting = '3';
 let chosenWord;
@@ -50,11 +51,13 @@ if (currentUrl === "http://localhost:3000/settings.html") {
 
 
 //***************** gameplay page js **************************
-// else if (currentUrl.indexOf("/gameplay.html")!==1) {
 else if (currentUrl === "http://localhost:3000/gameplay.html") {
+
     console.log("starting stats")
     console.log("   attempt_setting:", attempt_setting)
     console.log("   word_length:", word_length)
+
+    const userInput = document.getElementsByClassName("user-input")
 
     const buttons = document.getElementsByClassName("input");
     const gameplay_attempts_left = document.getElementById("gameplay-attempts-left");
@@ -85,27 +88,55 @@ else if (currentUrl === "http://localhost:3000/gameplay.html") {
     gameplay_attempts_left.textContent = "Attempts left: " + attempts_left
 
 
+    let userInputElement = document.querySelector(".user-input");
+    if (word_length === '3') {
+        userInputElement.style.marginLeft = "-100px"
+    }
+    else if (word_length === '4') {
+        userInputElement.style.marginLeft = "-120px"
+    }
+    else {
+        userInputElement.style.marginLeft = "-140px"
+    }
+    for ( let i = 0; i < parseInt(word_length); i++) {
+
+        const label = document.createElement("label");
+
+        label.setAttribute("id", "input-"+(i+1));
+        label.textContent = "_";
+        userInputElement.appendChild(label);
+        label.style.marginRight = '20px';
+    }
+
     fetchWord(word_length)
         .then(word => {
 
             if(!buttons.length){
                 console.log("No buttons found with class name 'input'")
             }else{
+
                 for (let i = 0; i < buttons.length; i++) {
                     buttons[i].textContent = alphabets[i]
 
                     buttons[i].addEventListener("click", function() {
+                        count += 1
                         // Code to run when any button is clicked
                         const ranWord = this.textContent;
                         console.log("a button was clicked:", this.textContent)
-                        for (let j = 0; j < user_input_A.length; j++) {
-                            if (user_input_A[j].textContent === "_") {
-                                user_input_A[j].textContent = ranWord
-                                userAnswer += ranWord
-                                break;
+                        if ( count <= parseInt(word_length)) {
+                            buttons[i].disabled = true
+
+                            for (let j = 0; j < word.length; j++) {
+                                const inputI = document.getElementById("input-"+(j+1))
+                                if (inputI.textContent === "_") {
+                                    inputI.textContent = ranWord
+                                    userAnswer += ranWord
+                                    break;
+                                }
                             }
+                            this.textContent = "-"
                         }
-                        this.textContent = "-"
+
                     });
                 }
             }
@@ -113,6 +144,7 @@ else if (currentUrl === "http://localhost:3000/gameplay.html") {
 
 
     guess.addEventListener("click", function (){
+        count = 0;
         console.log("attempts settings:", attempt_setting)
         guessedWord = ""
         let lean = true;
@@ -121,15 +153,16 @@ else if (currentUrl === "http://localhost:3000/gameplay.html") {
             alert("You have used all the attempts!")
         }
         else {
-            for (let j = 0; j < word_length; j++) {
-                if (user_input_A[j].textContent === "_") {
+            for (let j = 0; j < parseInt(word_length); j++) {
+                const inputI = document.getElementById("input-"+(j+1))
+                if (inputI.textContent === "_") {
                     alert("Please select all the letters of the word first")
                     lean = false;
                     addOrNot = false;
                     break;
                 }
                 else {
-                    guessedWord += user_input_A[j].textContent
+                    guessedWord += inputI.textContent
                 }
             }
             if (lean && attempts_left >0) {
@@ -162,13 +195,19 @@ else if (currentUrl === "http://localhost:3000/gameplay.html") {
                     }
                 }
                 for (let j = 0; j < word_length; j++) {
-                    if(user_input_A[j].style.background !== "green"){
-                        user_input_A[j].textContent = "_"
+                    const inputI = document.getElementById("input-"+(j+1))
+                    if(inputI.style.background !== "green"){
+                        inputI.textContent = "_"
                     }
                     else {
                         userAnswer[j] = chosenWord[j]
                     }
                 }
+            }
+
+            // enabling all the falsely disabled buttons
+            for (let i = 0; i < buttons.length; i++) {
+                buttons[i].textContent = alphabets[i]
             }
 
             if (addOrNot) {
@@ -180,14 +219,15 @@ else if (currentUrl === "http://localhost:3000/gameplay.html") {
                 const div = document.createElement("div");
 
                 for (let i = 0; i < word_length; i++) {
+                    const inputI = document.getElementById("input-"+(i+1))
                     const label = document.createElement("label")
                     label.textContent = guessedWord[i]
                     if (label.textContent === chosenWord[i]) {
                         label.style.background = "green";
                         alphabets[alphabets.indexOf(guessedWord[i])] = "_"
                         updateRandomList(buttons)
-                        user_input_A[i].textContent = chosenWord[i]
-                        user_input_A[i].style.background = "green";
+                        inputI.textContent = chosenWord[i]
+                        inputI.style.background = "green";
                         currentWord += chosenWord[i]
                     }
                     else if (chosenWord.indexOf(userAnswer[i]) !== -1) {
@@ -226,11 +266,7 @@ else if (currentUrl === "http://localhost:3000/gameplay.html") {
         userAnswer = ""
     })
 
-    for (let j = 0; j < user_input_A.length; j++) {
-        if (j>=word_length) {
-            user_input_A[j].style.display = "none";
-        }
-    }
+
 
     gameHomeButton.addEventListener("click", goBackHome)
 }
@@ -257,6 +293,7 @@ function updateArrayW(word) {
 }
 
 function reset(attempts_left, gameplay_attempts_left) {
+    count = 0
     attempts_left = attempt_setting
     gameplay_attempts_left.textContent = "Attempts left: " + attempts_left
 
@@ -283,14 +320,15 @@ function reset(attempts_left, gameplay_attempts_left) {
             // resetting the input buttons with the original alphabets
             for (let i = 0; i < buttons.length; i++) {
                 buttons[i].textContent = alphabets[i]
+                buttons[i].disabled = false
             }
         })
 
-    const user_input_container = document.querySelector(".user-input");
-    const user_input_A = user_input_container.querySelectorAll("label");
-    for (let i = 0; i < chosenWord.length; i++) {
-        user_input_A[i].textContent = "_"
-        user_input_A[i].style.background = "none";
+
+    for (let j = 0; j < word_length; j++) {
+        const inputI = document.getElementById("input-" + (j + 1))
+        inputI.textContent = "_"
+        inputI.style.background = "none";
     }
 
     return attempts_left
