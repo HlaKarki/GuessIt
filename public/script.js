@@ -61,15 +61,14 @@ else if (currentUrl === "http://localhost:3000/gameplay.html") {
 
     const buttons = document.getElementsByClassName("input");
     const gameplay_attempts_left = document.getElementById("gameplay-attempts-left");
-    const user_input_container = document.querySelector(".user-input");
-    const user_input_A = user_input_container.querySelectorAll("label");
+
     const newWordButton = document.getElementById("new-word-button")
     const gameHomeButton = document.getElementById("gameplay-home-button")
 
     const guess = document.getElementById("guessit");
     const erase = document.getElementById("erase");
     let guessedWord = "";
-    let userAnswer = ""
+    let userAnswer = new Array()
 
     if (localStorage.getItem("attempts")) {
         console.log("attempt setting was updated in settings page")
@@ -130,7 +129,7 @@ else if (currentUrl === "http://localhost:3000/gameplay.html") {
                                 const inputI = document.getElementById("input-"+(j+1))
                                 if (inputI.textContent === "_") {
                                     inputI.textContent = ranWord
-                                    userAnswer += ranWord
+                                    userAnswer.push(ranWord)
                                     break;
                                 }
                             }
@@ -173,7 +172,8 @@ else if (currentUrl === "http://localhost:3000/gameplay.html") {
                     if (result === true ){
                         attempts_left = reset(attempts_left, gameplay_attempts_left)
                         updateRandomList(buttons)
-                        userAnswer = ""
+
+                        userAnswer.length = 0
                     }
                     else {
                         goBackHome();
@@ -187,20 +187,24 @@ else if (currentUrl === "http://localhost:3000/gameplay.html") {
                         if (result === true) {
                             attempts_left = reset(attempts_left, gameplay_attempts_left)
                             updateRandomList(buttons)
-                            userAnswer = ""
+                            userAnswer.length = 0
                         }
                         else {
                             goBackHome();
                         }
                     }
                 }
+                let tempArray = chosenWord.split("")
                 for (let j = 0; j < word_length; j++) {
                     const inputI = document.getElementById("input-"+(j+1))
                     if(inputI.style.background !== "green"){
+                        tempArray[j] = inputI.textContent
                         inputI.textContent = "_"
                     }
                     else {
-                        userAnswer[j] = chosenWord[j]
+                        console.log("here it happens:", userAnswer)
+                        console.log("here it happens:   ", userAnswer[j], " + ", chosenWord[j])
+                        userAnswer = tempArray
                     }
                 }
             }
@@ -217,7 +221,7 @@ else if (currentUrl === "http://localhost:3000/gameplay.html") {
 
                 const answerDiv = document.getElementById("answer_container")
                 const div = document.createElement("div");
-
+                let index = 0
                 for (let i = 0; i < word_length; i++) {
                     const inputI = document.getElementById("input-"+(i+1))
                     const label = document.createElement("label")
@@ -231,6 +235,12 @@ else if (currentUrl === "http://localhost:3000/gameplay.html") {
                         currentWord += chosenWord[i]
                     }
                     else if (chosenWord.indexOf(userAnswer[i]) !== -1) {
+                        index = alphabets.indexOf(userAnswer[i])
+                        while(index !== -1) {
+                            console.log("here once")
+                            buttons[alphabets.indexOf(userAnswer[i])].disabled = false
+                            index = alphabets.indexOf(userAnswer[i], index+1)
+                        }
                         label.style.background = "yellow"
                     }
                     else {
@@ -242,7 +252,7 @@ else if (currentUrl === "http://localhost:3000/gameplay.html") {
 
                 }
                 answerDiv.appendChild(div)
-                userAnswer = ""
+                userAnswer.length = 0
             }
 
         }
@@ -251,19 +261,26 @@ else if (currentUrl === "http://localhost:3000/gameplay.html") {
     })
 
     erase.addEventListener("click", function (){
-        for (let j = user_input_A.length-1; j > -1; j--) {
-            if (user_input_A[j].textContent !== "_") {
-                user_input_A[j].textContent = "_"
+        if ( (count-1) >= 0){
+            count -= 1
+        }
+
+        for (let j = word_length-1; j > -1; j--) {
+            const inputI = document.getElementById("input-"+(j+1))
+            if (inputI.textContent !== "_") {
+                buttons[alphabets.indexOf(userAnswer[j])].disabled = false
+                buttons[alphabets.indexOf(userAnswer[j])].textContent = userAnswer[j]
+                inputI.textContent = "_"
                 break;
             }
         }
-        userAnswer = userAnswer.substring(0, userAnswer.length - 1);
+        userAnswer.pop();
     })
 
     newWordButton.addEventListener("click", function() {
         attempts_left = reset(attempts_left, gameplay_attempts_left)
         updateRandomList(buttons)
-        userAnswer = ""
+        userAnswer.length = 0
     })
 
 
@@ -359,5 +376,6 @@ async function fetchWord(word_length){
             chosenWord = data.responseString.toLowerCase()
             updateArrayW(chosenWord)
         })
+
     return chosenWord
 }
