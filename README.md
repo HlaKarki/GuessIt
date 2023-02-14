@@ -1,7 +1,7 @@
 # CS361Project
 
 
-• Communication contract
+• Communication contract \n
 
   • How to request data
     - First, set up an rpyc connection using the 'localhost' and the server's port number which in this case is 18861.
