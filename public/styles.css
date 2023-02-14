@@ -7,14 +7,14 @@ body{
     margin: 0px;
     font-family: 'IBM Plex Mono', monospace;
 }
-
+/********************* styles for home page ******************************/
 .game-name {
     text-align: center;
     margin-top: 8%;
     font-size: 100px;
 }
 
-.home-begin, .home-settings, .home-about, .settings {
+.home-begin, .home-settings, .home-about, .settings{
     position: absolute;
     top: 50%;
     left: 50%;
@@ -32,8 +32,14 @@ body{
     color: black;
     font-weight: 600;
     font-size: 40px;
+
+    border: none;
+    background: none;
 }
 
+#begin-button:hover, #about-button:hover, #settings-button:hover {
+    cursor: pointer;
+}
 /********************* styling for gameplay page *******************/
 .home-settings {
     margin-top: 50px;
@@ -193,9 +199,19 @@ body{
     text-align: left;
     width: 250px;
 }
+
+.settings-settings {
+    margin-top: 0px;
+    background-color: indianred;
+    padding: 10px;
+}
+
 .settings div {
     padding-top: 30px;
-    padding-bottom: 30px;
+}
+
+.settings-word-length, .settings-attempts {
+    padding-bottom: 10px;
 }
 
 .settings-attempts input, .settings-word-length input {
@@ -210,10 +226,23 @@ body{
     margin-left: 65px;
 }
 
-.settings-settings {
-    margin-top: 0px;
-    background-color: indianred;
-    padding: 10px;
+.settings-doneB {
+    padding-bottom: 15px;
+}
+
+#settings-done-button {
+    background-color: #aaec78;
+    border-radius: 5px;
+    border: 1px solid black;
+    font-family: "IBM Plex Mono", monospace;
+
+    position: relative;
+    left: 30%;
+    padding: 10px 30px 10px 30px;
+}
+
+#settings-done-button:hover {
+    cursor: pointer;
 }
 
 /*******************************************************
