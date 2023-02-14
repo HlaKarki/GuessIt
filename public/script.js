@@ -9,7 +9,7 @@ let alphabets = ["a", "b", "d", "e", "f", "g",
 
 
 //***************** home page js **************************
-if (currentUrl.indexOf("/index.html")!==-1 || currentUrl === "http://localhost:3000/") {
+if (currentUrl === "http://localhost:3000/index.html" || currentUrl === "http://localhost:3000/") {
     const beginButton = document.getElementById("begin-button")
     const settingsButton = document.getElementById("settings-button")
     const aboutButton = document.getElementById("about-button")
@@ -29,7 +29,7 @@ if (currentUrl.indexOf("/index.html")!==-1 || currentUrl === "http://localhost:3
 
 
 //***************** settings page js **************************
-if (currentUrl.indexOf("/settings.html")!==-1) {
+if (currentUrl === "http://localhost:3000/settings.html") {
     const allowed_attempts = document.getElementById("allowed-attempts-number");
     const word_lengthId = document.getElementById("word-length-number")
 
@@ -50,7 +50,8 @@ if (currentUrl.indexOf("/settings.html")!==-1) {
 
 
 //***************** gameplay page js **************************
-else if (currentUrl.indexOf("/gameplay.html")!==1) {
+// else if (currentUrl.indexOf("/gameplay.html")!==1) {
+else if (currentUrl === "http://localhost:3000/gameplay.html") {
     console.log("starting stats")
     console.log("   attempt_setting:", attempt_setting)
     console.log("   word_length:", word_length)
