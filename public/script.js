@@ -10,27 +10,39 @@ let alphabets = ["a", "b", "d", "e", "f", "g",
 
 //***************** home page js **************************
 if (currentUrl.indexOf("/index.html")!==-1 || currentUrl === "http://localhost:3000/") {
-  const beginButton = document.getElementById("begin-button")
+    const beginButton = document.getElementById("begin-button")
+    const settingsButton = document.getElementById("settings-button")
+    const aboutButton = document.getElementById("about-button")
+
     beginButton.addEventListener("click", function () {
         window.location.href = "/gameplay.html";
     })
 
+    settingsButton.addEventListener("click", function (){
+        window.location.href = "/settings.html"
+    })
+
+    aboutButton.addEventListener("click", function (){
+        window.location.href = "/about.html"
+    })
 }
 
 
 //***************** settings page js **************************
 if (currentUrl.indexOf("/settings.html")!==-1) {
     const allowed_attempts = document.getElementById("allowed-attempts-number");
-    allowed_attempts.addEventListener("input", function(){
+    const word_lengthId = document.getElementById("word-length-number")
+
+    const settingDone = document.getElementById("settings-done-button")
+    settingDone.addEventListener("click", function() {
+        // console.log("from settings.html, attempts-settings:", allowed_attempts.value)
         localStorage.setItem("attempts", allowed_attempts.value)
         attempt_setting = allowed_attempts.value
-    })
 
-    const word_lengthId = document.getElementById("word-length-number")
-    word_lengthId.addEventListener("input", function(){
-        console.log("from settings.html, word_length:", word_lengthId.value)
+        // console.log("from settings.html, word_length:", word_lengthId.value)
         localStorage.setItem("word-length", word_lengthId.value)
         word_length = word_lengthId.value
+        window.location.href = "/index.html";
     })
 }
 //*************************************************************
