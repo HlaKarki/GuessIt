@@ -86,9 +86,6 @@ body{
     margin-top: -50px;
     margin-left: -50px;
 }
-.user-input {
-    margin-left: -115px;
-}
 
 .user-input label, #answer_container label{
     font-family: "IBM Plex Mono", monospace;
