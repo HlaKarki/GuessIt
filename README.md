@@ -21,6 +21,8 @@
     - After this, we can simply print out the tasks from client side to see it evidently that we have received the sorted tasks.
    
   • UML Sequence Diagram
-    ![image](https://user-images.githubusercontent.com/72935373/218612871-01194bec-3d1c-49aa-818d-e79a30267233.png)
+  
+    - <img width="865" alt="image" src="https://user-images.githubusercontent.com/72935373/218613357-1392a583-f205-4de5-ba77-9533ea849318.png">
+
 
     
