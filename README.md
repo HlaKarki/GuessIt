@@ -22,7 +22,7 @@
    
   • UML Sequence Diagram
   
-    - https://user-images.githubusercontent.com/72935373/218613357-1392a583-f205-4de5-ba77-9533ea849318.png
+    - ![image](https://user-images.githubusercontent.com/72935373/218613474-8d96df09-1523-4d45-98be-9c571d5b470a.png)
 
 
     
