@@ -1,19 +1,21 @@
+// ******** Global variables declaration ****************
 let currentUrl = window.location.href;
-let count = 0
-let word_length = '4'
-let attempt_setting = '3';
-let chosenWord;
-let currentWord = "";
+let userInputWordCount = 0;
+let word_length;
+let attempt_setting;
+let chosenWord; //word chosen by the server
 let alphabets = ["a", "b", "d", "e", "f", "g",
     "h", "i", "k", "l", "m", "n",
     "o", "p", "r", "s", "t", "w"];
+// *********************************************************
 
 
-//***************** home page js **************************
+// ***************** home page javascript **************************
 if (currentUrl === "http://localhost:3000/index.html" || currentUrl === "http://localhost:3000/") {
     const beginButton = document.getElementById("begin-button")
     const settingsButton = document.getElementById("settings-button")
     const aboutButton = document.getElementById("about-button")
+    const feedbackButton = document.getElementById("about-feedback")
 
     beginButton.addEventListener("click", function () {
         window.location.href = "/gameplay.html";
@@ -26,67 +28,91 @@ if (currentUrl === "http://localhost:3000/index.html" || currentUrl === "http://
     aboutButton.addEventListener("click", function (){
         window.location.href = "/about.html"
     })
-}
 
-
-//***************** settings page js **************************
-if (currentUrl === "http://localhost:3000/settings.html") {
-    const allowed_attempts = document.getElementById("allowed-attempts-number");
-    const word_lengthId = document.getElementById("word-length-number")
-
-    const settingDone = document.getElementById("settings-done-button")
-    settingDone.addEventListener("click", function() {
-        // console.log("from settings.html, attempts-settings:", allowed_attempts.value)
-        localStorage.setItem("attempts", allowed_attempts.value)
-        attempt_setting = allowed_attempts.value
-
-        // console.log("from settings.html, word_length:", word_lengthId.value)
-        localStorage.setItem("word-length", word_lengthId.value)
-        word_length = word_lengthId.value
-        window.location.href = "/index.html";
+    feedbackButton.addEventListener("click", function() {
+        window.location.href = "/feedback.html"
     })
 }
 //*************************************************************
 
 
+//***************** settings page javascript **************************
+if (currentUrl === "http://localhost:3000/settings.html") {
+    const allowed_attempts = document.getElementById("allowed-attempts-number");
+    const word_lengthId = document.getElementById("word-length-number")
+    const settingDoneButton = document.getElementById("settings-done-button")
+
+    settingDoneButton.addEventListener("click", function() {
+        // store user customized settings in browser storage //
+        localStorage.setItem("attempts", allowed_attempts.value)
+        attempt_setting = allowed_attempts.value
+
+        localStorage.setItem("word-length", word_lengthId.value)
+        word_length = word_lengthId.value
+
+        goBackHome();
+    })
+}
+//*************************************************************
+
+
+// ***************** about page javascript **************************
+else if (currentUrl === "http://localhost:3000/about.html") {
+    const homeButton = document.getElementById("about-home-button");
+    homeButton.addEventListener("click", goBackHome);
+}
+//*************************************************************
+
 
 //***************** gameplay page js **************************
 else if (currentUrl === "http://localhost:3000/gameplay.html") {
+    // add the input buttons first dynamically (to clean up gameplay html page)
+    // the button labels are temporarily named 1-18, updated later
+    const inputButtons = document.querySelector(".random-words");
+    for (let i = 1; i <= 18; i++) {
+        const button = document.createElement('button');
+        button.classList.add('input');
+        button.textContent = i;
+        inputButtons.appendChild(button);
+    }
 
+    // ******** variable declaration ***********
+    const buttons = document.getElementsByClassName("input");
+    const gameplay_attempts_left = document.getElementById("gameplay-attempts-left");
+    const resetButton = document.getElementById("new-word-button")
+    const gameHomeButton = document.getElementById("gameplay-home-button")
+    const guessButton = document.getElementById("guessit");
+    const eraseButton = document.getElementById("erase");
+    let guessedWord = "";
+    let userAnswer = new Array()
+    // ****************************************
+
+    // get the settings set by the user in the settings page, update the relevant variables
+    if (localStorage.getItem("attempts") != null) {
+        attempt_setting = localStorage.getItem("attempts");
+    }
+    else {
+        attempt_setting = '3'
+    }
+
+    if (localStorage.getItem("word-length") != null) {
+        word_length = localStorage.getItem("word-length");
+    }
+    else {
+        word_length = '4'
+    }
+
+    // ******** debug tools ***********
     console.log("starting stats")
     console.log("   attempt_setting:", attempt_setting)
     console.log("   word_length:", word_length)
-
-    const userInput = document.getElementsByClassName("user-input")
-
-    const buttons = document.getElementsByClassName("input");
-    const gameplay_attempts_left = document.getElementById("gameplay-attempts-left");
-
-    const newWordButton = document.getElementById("new-word-button")
-    const gameHomeButton = document.getElementById("gameplay-home-button")
-
-    const guess = document.getElementById("guessit");
-    const erase = document.getElementById("erase");
-    let guessedWord = "";
-    let userAnswer = new Array()
-
-    if (localStorage.getItem("attempts")) {
-        console.log("attempt setting was updated in settings page")
-        attempt_setting = localStorage.getItem("attempts");
-    }
-
+    // ********************************
     let attempts_left = attempt_setting
 
-    if (localStorage.getItem("word-length")) {
-        console.log("word length was updated in settings page")
-        word_length = localStorage.getItem("word-length");
-    }
-
-    console.log("from gameplay, attempts_left: ", attempts_left)
-    console.log("from gameplay, word_length: ", word_length)
+    // update the attempts left DOM element
     gameplay_attempts_left.textContent = "Attempts left: " + attempts_left
 
-
+    // dynamically changing the style of userInput div based on the length of the word
     let userInputElement = document.querySelector(".user-input");
     if (word_length === '3') {
         userInputElement.style.marginLeft = "-100px"
@@ -97,93 +123,98 @@ else if (currentUrl === "http://localhost:3000/gameplay.html") {
     else {
         userInputElement.style.marginLeft = "-140px"
     }
+
+    // adding the DOM element where the user chosen letters will be displayed
     for ( let i = 0; i < parseInt(word_length); i++) {
-
         const label = document.createElement("label");
-
         label.setAttribute("id", "input-"+(i+1));
         label.textContent = "_";
         userInputElement.appendChild(label);
         label.style.marginRight = '20px';
     }
 
+    // calling for a word to the server
     fetchWord(word_length)
         .then(word => {
+            for (let i = 0; i < buttons.length; i++) {
+                // first thing to do is to update the input buttons which were labeled 1-18 previously
+                buttons[i].textContent = alphabets[i]
 
-            if(!buttons.length){
-                console.log("No buttons found with class name 'input'")
-            }else{
+                buttons[i].addEventListener("click", function() {
+                    userInputWordCount += 1
 
-                for (let i = 0; i < buttons.length; i++) {
-                    buttons[i].textContent = alphabets[i]
+                    const userChosenLetter = this.textContent;
+                    // check if the no. of letters (user input) is <= to the length of the word
+                    if ( userInputWordCount <= parseInt(word_length)) {
+                        // disabling the button when it is clicked once
+                        buttons[i].disabled = true
 
-                    buttons[i].addEventListener("click", function() {
-                        count += 1
-                        // Code to run when any button is clicked
-                        const ranWord = this.textContent;
-                        console.log("a button was clicked:", this.textContent)
-                        if ( count <= parseInt(word_length)) {
-                            buttons[i].disabled = true
-
-                            for (let j = 0; j < word.length; j++) {
-                                const inputI = document.getElementById("input-"+(j+1))
-                                if (inputI.textContent === "_") {
-                                    inputI.textContent = ranWord
-                                    userAnswer.push(ranWord)
-                                    break;
-                                }
+                        for (let j = 0; j < word.length; j++) {
+                            const userInputDisplay = document.getElementById("input-"+(j+1))
+                            // updating the DOM element where the user chosen letters are displayed
+                            if (userInputDisplay.textContent === "_") {
+                                userInputDisplay.textContent = userChosenLetter
+                                // updating the userAnswer array with the confirmed chosen letter
+                                userAnswer.push(userChosenLetter)
+                                // this is necessary since I only want to update the label of first button with "_"
+                                break;
                             }
-                            this.textContent = "-"
                         }
-
-                    });
-                }
+                    }
+                    // update the label of clicked button to "-" to indicate the letter has been chosen
+                    this.textContent = "-"
+                });
             }
         })
 
+    // when the guess button is clicked
+    guessButton.addEventListener("click", function (){
+        // reset the word counter to 0
+        userInputWordCount = 0;
 
-    guess.addEventListener("click", function (){
-        count = 0;
-        console.log("attempts settings:", attempt_setting)
         guessedWord = ""
-        let lean = true;
-        let addOrNot = true;
+        let isWordLengthValid = true;
+        let addToAttemptHistory = true;
         if (attempts_left < 1) {
             alert("You have used all the attempts!")
         }
         else {
             for (let j = 0; j < parseInt(word_length); j++) {
-                const inputI = document.getElementById("input-"+(j+1))
-                if (inputI.textContent === "_") {
+                const userInputDisplay = document.getElementById("input-"+(j+1))
+                if (userInputDisplay.textContent === "_") {
                     alert("Please select all the letters of the word first")
-                    lean = false;
-                    addOrNot = false;
+                    isWordLengthValid = false;
+                    addToAttemptHistory = false;
                     break;
                 }
                 else {
-                    guessedWord += inputI.textContent
+                    // otherwise update the guessedWord with each letter
+                    guessedWord += userInputDisplay.textContent
                 }
             }
-            if (lean && attempts_left >0) {
+            if (isWordLengthValid && attempts_left >0) {
                 if (guessedWord === chosenWord) {
-                    addOrNot = false
-                    currentWord = ""
-                    let result = confirm("Amazing!\nYou've successfully guessed the word!It was indeed \"" + chosenWord.toUpperCase()+"\"!\nWould you like to try a new word?")
+                    addToAttemptHistory = false // no need to add when the guess is correct
+                    let result = confirm("Amazing!\nYou've successfully guessed the word!" +
+                        "It was indeed \"" + chosenWord.toUpperCase()+"\"!" +
+                        "\nWould you like to try a new word?")
+                    // if user chose "confirm"
                     if (result === true ){
                         attempts_left = reset(attempts_left, gameplay_attempts_left)
                         updateRandomList(buttons)
-
                         userAnswer.length = 0
                     }
+                    // otherwise go back to home page
                     else {
                         goBackHome();
                     }
                 }
                 else {
                     if(attempts_left <= 1) {
-                        addOrNot = false
-                        currentWord = ""
-                        let result = confirm("Sorry :( You used up all the attempts.\nThe word to be guessed was \"" + chosenWord.toUpperCase()+"\"\nWould you like to try guessing another word?")
+                        addToAttemptHistory = false
+                        let result = confirm("Sorry :( You used up all the attempts." +
+                            "\nThe word to be guessed was \"" + chosenWord.toUpperCase()+
+                            "\"\nWould you like to try guessing another word?")
                         if (result === true) {
                             attempts_left = reset(attempts_left, gameplay_attempts_left)
                             updateRandomList(buttons)
@@ -194,79 +225,86 @@ else if (currentUrl === "http://localhost:3000/gameplay.html") {
                         }
                     }
                 }
+                // array to hold the current user answer temporarily
                 let tempArray = chosenWord.split("")
                 for (let j = 0; j < word_length; j++) {
-                    const inputI = document.getElementById("input-"+(j+1))
-                    if(inputI.style.background !== "green"){
-                        tempArray[j] = inputI.textContent
-                        inputI.textContent = "_"
+                    const userInputDisplay = document.getElementById("input-"+(j+1))
+                    // if the dom element is not green, update the button label to "_"
+                    if(userInputDisplay.style.background !== "green"){
+                        tempArray[j] = userInputDisplay.textContent
+                        userInputDisplay.textContent = "_"
                     }
                     else {
-                        console.log("here it happens:", userAnswer)
-                        console.log("here it happens:   ", userAnswer[j], " + ", chosenWord[j])
                         userAnswer = tempArray
                     }
                 }
             }
 
-            // enabling all the falsely disabled buttons
+            // enabling all the disabled buttons
             for (let i = 0; i < buttons.length; i++) {
                 buttons[i].textContent = alphabets[i]
             }
 
-            if (addOrNot) {
+            // add the answer to attempts history DOM element
+            if (addToAttemptHistory) {
                 console.log("UserAnswer:", userAnswer)
+                // update attempts left and the DOM element relating to it
                 attempts_left = (parseInt(attempts_left)-1).toString()
                 gameplay_attempts_left.textContent = "Attempts left: " + attempts_left
 
                 const answerDiv = document.getElementById("answer_container")
                 const div = document.createElement("div");
                 let index = 0
+
                 for (let i = 0; i < word_length; i++) {
-                    const inputI = document.getElementById("input-"+(i+1))
+                    const userInputDisplay = document.getElementById("input-"+(i+1))
+
+                    // creating new label element to add to attempt history
                     const label = document.createElement("label")
                     label.textContent = guessedWord[i]
                     if (label.textContent === chosenWord[i]) {
                         label.style.background = "green";
                         alphabets[alphabets.indexOf(guessedWord[i])] = "_"
                         updateRandomList(buttons)
-                        inputI.textContent = chosenWord[i]
-                        inputI.style.background = "green";
-                        currentWord += chosenWord[i]
+                        userInputDisplay.textContent = chosenWord[i]
+                        userInputDisplay.style.background = "green";
                     }
                     else if (chosenWord.indexOf(userAnswer[i]) !== -1) {
                         index = alphabets.indexOf(userAnswer[i])
+                        // every instance of letter at index should be enabled
                         while(index !== -1) {
-                            console.log("here once")
                             buttons[alphabets.indexOf(userAnswer[i])].disabled = false
                             index = alphabets.indexOf(userAnswer[i], index+1)
                         }
                         label.style.background = "yellow"
                     }
+                    // otherwise just update the array with "_"
                     else {
                         alphabets[alphabets.indexOf(userAnswer[i])] = "_"
                         updateRandomList(buttons)
                     }
+                    // finally add the label to the div crated before
                     div.appendChild(label)
 
 
                 }
+                // add the div to the attempt history container
                 answerDiv.appendChild(div)
                 userAnswer.length = 0
             }
 
         }
-        console.log("guessed word: ", guessedWord)
-
     })
 
-    erase.addEventListener("click", function (){
-        if ( (count-1) >= 0){
-            count -= 1
+    // when erase button is clicked
+    eraseButton.addEventListener("click", function (){
+        // update the counter when erased
+        if ( (userInputWordCount-1) >= 0){
+            userInputWordCount -= 1
         }
-
         for (let j = word_length-1; j > -1; j--) {
             const inputI = document.getElementById("input-"+(j+1))
+            // enable the button again
             if (inputI.textContent !== "_") {
                 buttons[alphabets.indexOf(userAnswer[j])].disabled = false
                 buttons[alphabets.indexOf(userAnswer[j])].textContent = userAnswer[j]
@@ -274,21 +312,64 @@ else if (currentUrl === "http://localhost:3000/gameplay.html") {
                 break;
             }
         }
+        // remove the erased letter from the array
         userAnswer.pop();
     })
 
-    newWordButton.addEventListener("click", function() {
-        attempts_left = reset(attempts_left, gameplay_attempts_left)
-        updateRandomList(buttons)
-        userAnswer.length = 0
+    // when the reset button is clicked
+    resetButton.addEventListener("click", function() {
+        let result = confirm("Are you sure you want to reset?\nCurrent progress will be lost 😬")
+        if (result === true) {
+            attempts_left = reset(attempts_left, gameplay_attempts_left)
+            updateRandomList(buttons)
+            userAnswer.length = 0
+        }
     })
 
-
-
-    gameHomeButton.addEventListener("click", goBackHome)
+    // when the home button is clicked
+    gameHomeButton.addEventListener("click", function() {
+        let result = confirm("Are you sure you want proceed to home page?\nCurrent progress will be lost😬")
+        if (result === true) {
+            goBackHome()
+        }
+    })
 }
 
+//***************** feedback page javascript **************************
+if (currentUrl === "http://localhost:3000/feedback.html") {
+
+    // load the feedbacks in the JSON file when window is loaded
+    window.addEventListener('load', function () {
+        fetchFeedbacks()
+    })
+
+    // ********** variable declaration *************
+    const newFeedbackFormButton = document.getElementById("feedback-new-form");
+    const modalBackdrop = document.getElementById("modal-backdrop");
+    const feedbackForm = document.querySelector('.feedback-form');
+    const submitButton = document.getElementById("feedback-submit");
+    const homeButton = document.getElementById("feedback-home-button");
+    // *********************************************
+
+    homeButton.addEventListener("click", goBackHome);
+
+    // display the form when the button is clicked
+    newFeedbackFormButton.addEventListener("click", function(){
+        modalBackdrop.classList.remove("hidden");
+        feedbackForm.classList.remove('hidden');
+    })
+
+    // when submit button is clicked, add the new feedback to the JSON file
+    submitButton.addEventListener("click", function() {
+        addNewFeedback(modalBackdrop, feedbackForm);
+    })
+}
+// ************************************************************************
+
+
 // *************************** helper functions ***************************
+
+// shuffles the array
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
         let j = Math.floor(Math.random() * (i + 1));
@@ -297,51 +378,50 @@ function shuffleArray(array) {
     return array;
 }
 
+// updates the array with the chosen word and shuffles the array again
 function updateArrayW(word) {
-    console.log("updateArrayW_word:", word)
-    console.log("   before:", alphabets)
     for (let z = 0; z < word.length; z++) {
         alphabets[z] = word[z]
     }
     alphabets = shuffleArray(alphabets)
-    console.log("   after:", alphabets)
-
-    return word
 }
 
+// when reset button is clicked
 function reset(attempts_left, gameplay_attempts_left) {
-    count = 0
-    attempts_left = attempt_setting
-    gameplay_attempts_left.textContent = "Attempts left: " + attempts_left
+    // resetting variable to default values
+        userInputWordCount = 0
+        attempts_left = attempt_setting
+        gameplay_attempts_left.textContent = "Attempts left: " + attempts_left
+    // ************************************
 
-    const deleteThis = document.getElementById("answer_container");
-    const buttons = document.getElementsByClassName("input");
-
-    while (deleteThis.firstChild) {
-        deleteThis.removeChild(deleteThis.firstChild);
+    // first remove all the answers in that may be in the attempt history
+    const answerContainerDiv = document.getElementById("answer_container");
+    while (answerContainerDiv.firstChild) {
+        answerContainerDiv.removeChild(answerContainerDiv.firstChild);
     }
 
+    const buttons = document.getElementsByClassName("input");
     const h3 = document.createElement("h3");
     const text = document.createTextNode("Attempt history");
     h3.appendChild(text)
-    deleteThis.append(h3)
+    answerContainerDiv.append(h3)
 
+    // reset the alphabets array to default
     alphabets = ["a", "b", "d", "e", "f", "g",
         "h", "i", "k", "l", "m", "n",
         "o", "p", "r", "s", "t", "w"];
 
+    // call to server and update the chosen word with the received word
     fetchWord(word_length)
         .then(word => {
-            console.log("from gameplay page:", word)
-
-            // resetting the input buttons with the original alphabets
+            // resetting the input buttons with the original alphabets and enabling the buttons
             for (let i = 0; i < buttons.length; i++) {
                 buttons[i].textContent = alphabets[i]
                 buttons[i].disabled = false
             }
         })
 
-
+    // resetting the user input answer display DOM element's labels
     for (let j = 0; j < word_length; j++) {
         const inputI = document.getElementById("input-" + (j + 1))
         inputI.textContent = "_"
@@ -351,17 +431,20 @@ function reset(attempts_left, gameplay_attempts_left) {
     return attempts_left
 }
 
+// go back to home page
 function goBackHome() {
     let indexURL = currentUrl.indexOf("/")
     window.location.href = currentUrl.substring(0, indexURL) + "index.html";
 }
 
+// update the buttons' label with the shuffled alphabets array elements
 function updateRandomList(buttons){
     for (let i = 0; i < buttons.length; i++) {
         buttons[i].textContent = alphabets[i].toLowerCase()
     }
 }
 
+// call to server to request a random word
 async function fetchWord(word_length){
     await fetch("/word", {
         method: "POST",
@@ -379,3 +462,109 @@ async function fetchWord(word_length){
 
     return chosenWord
 }
+// getting all the feedbacks from the JSON file
+async function fetchFeedbacks(){
+    const feedbacks = document.getElementById("feedback-feedbacks");
+    // first remove all the feedbacks that may be in the DOM
+    while (feedbacks.firstChild) {
+        feedbacks.removeChild(feedbacks.firstChild);
+    }
+
+    // get call to server to provide with the feedback data
+    await fetch("/getData", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data)
+            // Loop through each feedback item and create an element for it
+            data.forEach(feedback => {
+                const feedbackItem = document.createElement("div");
+                feedbackItem.classList.add("feedback-item");
+                feedbackItem.classList.add("feedback-box"); // Add feedback-box class
+
+                const name = document.createElement("h2");
+                name.textContent = feedback.name;
+                feedbackItem.appendChild(name);
+
+                const currentFeedback = document.createElement("p");
+                currentFeedback.textContent = feedback.feedback;
+                feedbackItem.appendChild(currentFeedback);
+
+                const timestamp = document.createElement("span");
+                timestamp.classList.add("timestamp");
+                timestamp.textContent = timeAgo(feedback.time)
+                feedbackItem.appendChild(timestamp);
+
+                feedbacks.appendChild(feedbackItem);
+            })
+        })
+        .catch(error => console.error(error));
+}
+
+// add the user input feedback data to the JSON file
+async function addNewFeedback(modalBackdrop, feedbackForm) {
+    const feedbackName = document.getElementById("feedback-name");
+    const feedback = document.getElementById("feedback-feedback");
+    const timeNow = new Date().toISOString();
+
+    // post call to server with name, feedback and time data
+    await fetch('/addFeedback', {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            name: feedbackName.value,
+            feedback: feedback.value,
+            time: timeNow
+        })
+    })
+        .then(response => {
+            // hide the form again when done
+            if (response.status === 200) {
+                modalBackdrop.classList.add("hidden");
+                feedbackForm.classList.add('hidden');
+                alert("Your feedback has been submitted successfully");
+
+                feedbackName.value = "";
+                feedback.value = "";
+                fetchFeedbacks();
+            }
+            else {
+                alert("There was an error submitting your feedback. Please try again later.")
+            }
+        })
+}
+
+// formats the time data to time elapsed since format
+function timeAgo(timestamp) {
+    const now = new Date();
+    const seconds = Math.floor((now - new Date(timestamp)) / 1000);
+    let interval = Math.floor(seconds / 31536000);
+
+    if (interval >= 1) {
+        return interval + " year" + (interval === 1 ? "" : "s") + " ago";
+    }
+    interval = Math.floor(seconds / 2592000);
+    if (interval >= 1) {
+        return interval + " month" + (interval === 1 ? "" : "s") + " ago";
+    }
+    interval = Math.floor(seconds / 86400);
+    if (interval >= 1) {
+        return interval + " day" + (interval === 1 ? "" : "s") + " ago";
+    }
+    interval = Math.floor(seconds / 3600);
+    if (interval >= 1) {
+        return interval + " hour" + (interval === 1 ? "" : "s") + " ago";
+    }
+    interval = Math.floor(seconds / 60);
+    if (interval >= 1) {
+        return interval + " minute" + (interval === 1 ? "" : "s") + " ago";
+    }
+    return "Just now";
+}
+
