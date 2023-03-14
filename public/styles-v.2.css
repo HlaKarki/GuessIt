@@ -1,0 +1,88 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+    background-color: #121213;
+}
+
+.top-nav {
+    border-bottom: solid #adadad 1px;
+    height: 7vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.top-nav button {
+    background-color: #dcdcdc;
+    border: none;
+    border-radius: 5px;
+    width: 5vw;
+    height: 5vh;
+}
+
+.logo {
+    flex-grow: 1;
+    text-align: center;
+    color: #dcdcdc;
+    margin-left: 10vw;
+}
+
+.icons {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+.fa-refresh, .fa-home {
+    color: #dcdcdc;
+    margin: 0 2vw;
+}
+
+.fa-refresh:hover, .fa-home:hover {
+    cursor: pointer;
+}
+
+/*keyboard styling*/
+.keyboard-container {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    align-items: center;
+    width: fit-content;
+    margin: 0 auto;
+    padding: 20px;
+    /*box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);*/
+}
+
+
+.keyboard-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 300px;
+}
+
+.keyboard-key, .enter-key, .erase-key {
+    font-size: 20px;
+    color: white;
+    border: solid gray 1px;
+    border-radius: 3px;
+    margin: 3px;
+    padding: 5px;
+    min-width: 35px;
+    min-height: 50px;
+    background-color: #818384;
+}
+
+.enter-key, .erase-key {
+    font-size: 12px;
+    font-weight: bold;
+    min-width: 55px;
+    text-align: center;
+}
+
+.fa-backspace {
+    font-size: 23px;
+    padding-top: 12px;
+}
