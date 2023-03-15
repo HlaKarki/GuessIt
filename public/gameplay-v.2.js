@@ -58,5 +58,51 @@ if(window.location.href === "http://localhost:3000/gameplay-v.2.html") {
                 }
             }
         }
+
+        const inputsDiv = document.querySelector(".inputs");
+        for (let i = 1; i <= 6; i++) {
+            const labelDiv = document.createElement("div");
+            labelDiv.classList.add('labels-container')
+            for (let j = 1; j <= 5; j++) {
+                const label = document.createElement("label");
+                label.classList.add('input-label');
+                // label.textContent = j;
+                labelDiv.appendChild(label);
+                inputsDiv.appendChild(labelDiv);
+            }
+        }
+
+        const labels = document.querySelectorAll(".input-label");
+
+        document.addEventListener('keydown', function(event) {
+            const keyPressed = event.key;
+            if (isAlpha(keyPressed)) {
+                for (let i = 0; i < 5; i++) {
+                    if ( !labels[i].textContent ) {
+                        labels[i].textContent = keyPressed;
+                        break;
+                    }
+                }
+            }
+            else if (event.key === "Backspace") {
+                const reversedLabels = Array.from(labels).reverse();
+                for (const label of reversedLabels) {
+                    if ( label.textContent ) {
+                        label.textContent = "";
+                        break;
+                    }
+                }
+            }
+            else if (event.key === "Enter") {
+                console.log("entered")
+            }
+        })
     })
+}
+
+
+// helper functions
+
+function isAlpha(character) {
+    return /^[A-Za-z]$/.test(character);
 }
