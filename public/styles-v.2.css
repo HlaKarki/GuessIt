@@ -51,7 +51,7 @@
     align-items: center;
     width: fit-content;
     margin: 0 auto;
-    padding: 20px;
+    padding: 10px;
     /*box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);*/
 }
 
@@ -70,19 +70,61 @@
     border-radius: 3px;
     margin: 3px;
     padding: 5px;
-    min-width: 35px;
-    min-height: 50px;
+    min-width: 45px;
+    min-height: 60px;
     background-color: #818384;
 }
 
+.keyboard-key:hover, .enter-key:hover, .erase-key:hover {
+    cursor: pointer;
+
+}
 .enter-key, .erase-key {
     font-size: 12px;
     font-weight: bold;
-    min-width: 55px;
+    min-width: 70px;
     text-align: center;
 }
 
 .fa-backspace {
     font-size: 23px;
-    padding-top: 12px;
+    padding-top: 16px;
+}
+
+
+/********** the input styling ***************/
+
+.inputs {
+    margin-top: 10vh;
+}
+
+.labels-container {
+    display: flex;
+    justify-content: center;
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: 1px;
+}
+
+.input-label {
+    border: solid #7c8081 2px;
+    width: 60px;
+    height: 60px;
+    margin: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 20px;
+    color: #f5f5f5;
+}
+
+@media (max-height: 768px) {
+    .input-label {
+        width: 30px;
+        height: 30px;
+    }
+    .inputs {
+        margin-top: 3vh;
+    }
 }
