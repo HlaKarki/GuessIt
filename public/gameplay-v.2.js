@@ -32,11 +32,9 @@ if(window.location.href === "http://localhost:3000/gameplay-v.2.html") {
                     break;
                 }
             }
-            console.log(currentInputLabelIndex % 5)
         } else if (event.key === "Backspace" && !ignoreBackspace) {
             // don't let back spacing jump from current attempt to previous attempt
             if (currentInputLabelIndex % 5 === 0) {
-                console.log(currentInputLabelIndex+" "+labels[currentInputLabelIndex].textContent)
                 ignoreBackspace = true;
             }
             labels[currentInputLabelIndex].textContent = "";
@@ -46,6 +44,8 @@ if(window.location.href === "http://localhost:3000/gameplay-v.2.html") {
                 ignoreInput = false;
             }
         } else if (event.key === "Enter" && ignoreInput) {
+            // TODO: make sure user is entering meaningful word as input
+
             ignoreInput = false;
             ignoreBackspace = true;
 
@@ -79,8 +79,8 @@ if(window.location.href === "http://localhost:3000/gameplay-v.2.html") {
                     } else {
                         for (let j = 0; j < userWord.length; j++) {
                             // if semi-correct
-                            if (chosenWord[i] === userWord[j]) {
-                                labels[(currentInputLabelIndex-4) + j].style.background = "#af9a3b"
+                            if (userWord[i] === chosenWord[j]) {
+                                labels[(currentInputLabelIndex-4) + i].style.background = "#af9a3b"
                                 colorKeyboard(userWord[j], "#af9a3b");
                             }
                         }
@@ -256,4 +256,19 @@ async function newChosenWord() {
             chosenWord = word.toUpperCase();
         })
     return chosenWord
+}
+
+async function checkWord(userWord){
+    await fetch("/checkWord", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ userWord: userWord})
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log("received from server: ", data.responseString)
+        })
+
 }
