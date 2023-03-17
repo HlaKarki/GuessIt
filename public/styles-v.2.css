@@ -107,7 +107,7 @@
 }
 
 .input-label {
-    border: solid #7c8081 2px;
+    border: solid #3a3a3c 2px;
     width: 60px;
     height: 60px;
     margin: 2px;
@@ -147,3 +147,56 @@
     }
 }
 
+/*winning message*/
+.win-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: lightgreen;
+    padding: 20px 10px 10px 10px;
+    border-radius: 5px;
+    text-align: center;
+    white-space: pre-wrap;
+    width: 40vw;
+
+    z-index: 101;
+    /*box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.25);*/
+}
+
+.win-message-buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    background-color: inherit;
+}
+
+.okay-button, .no-button {
+    margin: 0 10px;
+    border: none;
+    background-color: inherit;
+    padding: 10px;
+}
+
+.okay-button:hover, .no-button:hover {
+    cursor: pointer;
+    border: solid black 1px;
+    background-color: black;
+    border-radius: 5px;
+    color: white;
+    padding: 9px;
+}
+
+#modal-backdrop {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background-color: rgba(0, 0, 0, 0.85);
+}
+
+.hidden {
+    display: none;
+}
