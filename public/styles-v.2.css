@@ -147,7 +147,7 @@
     }
 }
 
-/*winning message*/
+/************ Winning message *******************/
 .win-message {
     position: fixed;
     top: 50%;
@@ -199,4 +199,48 @@
 
 .hidden {
     display: none;
+}
+
+
+/************ Invalid Word message *******************/
+.invalid-word-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #f5f5f5;
+    padding: 15px;
+    border-radius: 5px;
+    text-align: center;
+    white-space: pre-wrap;
+
+    /*animation*/
+    opacity: 0;
+    animation-name: fadeIn;
+    animation-duration: 0.3s;
+    animation-fill-mode: forwards;
+}
+
+.invalid-word-message.hide {
+    animation-name: fadeOut;
+    animation-duration: 0.3s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
 }
