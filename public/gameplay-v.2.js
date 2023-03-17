@@ -44,50 +44,61 @@ if(window.location.href === "http://localhost:3000/gameplay-v.2.html") {
                 ignoreInput = false;
             }
         } else if (event.key === "Enter" && ignoreInput) {
-            // TODO: make sure user is entering meaningful word as input
+            checkWord(userWord)
+                .then(response => {
+                    if (response){
+                        ignoreInput = false;
+                        ignoreBackspace = true;
 
-            ignoreInput = false;
-            ignoreBackspace = true;
+                        console.log("chosenWord: ", chosenWord)
+                        console.log("userWord: ", userWord)
+                        // if answer is correct
+                        if (chosenWord === userWord) {
+                            for (let i = 0; i < 5; i++) {
+                                labels[(currentInputLabelIndex-4) + i].style.background = "#52894e"
+                            }
+                            ignoreInput = true;
+                            [userWord, ignoreInput] = winMessage(labels, currentInputLabelIndex);
+                            newChosenWord().then(newWord => {
+                                chosenWord = newWord;
+                            });
 
-            console.log("chosenWord: ", chosenWord)
-            console.log("userWord: ", userWord)
-            // if answer is correct
-            if (chosenWord === userWord) {
-                for (let i = 0; i < 5; i++) {
-                    labels[(currentInputLabelIndex-4) + i].style.background = "#52894e"
-                }
-                ignoreInput = true;
-                [userWord, ignoreInput] = winMessage(labels, currentInputLabelIndex);
-                newChosenWord().then(newWord => {
-                    chosenWord = newWord;
-                });
+                        } else {
+                            for (let i = 0; i < userWord.length; i++) {
+                                // setting incorrect answer to black
+                                if (!chosenWord.includes(userWord[i])) {
+                                    labels[(currentInputLabelIndex-4) + i].style.background = "#3a3a3c"
+                                    colorKeyboard(userWord[i], "#3a3a3c");
+                                }
+                                // setting border to none
+                                labels[(currentInputLabelIndex-4) + i].style.border = "none";
 
-            } else {
-                for (let i = 0; i < userWord.length; i++) {
-                    // setting incorrect answer to black
-                    if (!chosenWord.includes(userWord[i])) {
-                        labels[(currentInputLabelIndex-4) + i].style.background = "#3a3a3c"
-                        colorKeyboard(userWord[i], "#3a3a3c");
-                    }
-                    // setting border to none
-                    labels[(currentInputLabelIndex-4) + i].style.border = "none";
-
-                    // if correct letter
-                    if (chosenWord[i] === userWord[i]) {
-                        labels[(currentInputLabelIndex-4) + i].style.background = "#52894e"
-                        colorKeyboard(userWord[i], "#52894e");
-                    } else {
-                        for (let j = 0; j < userWord.length; j++) {
-                            // if semi-correct
-                            if (userWord[i] === chosenWord[j]) {
-                                labels[(currentInputLabelIndex-4) + i].style.background = "#af9a3b"
-                                colorKeyboard(userWord[j], "#af9a3b");
+                                // if correct letter
+                                if (chosenWord[i] === userWord[i]) {
+                                    labels[(currentInputLabelIndex-4) + i].style.background = "#52894e"
+                                    colorKeyboard(userWord[i], "#52894e");
+                                } else {
+                                    for (let j = 0; j < userWord.length; j++) {
+                                        // if semi-correct
+                                        if (userWord[i] === chosenWord[j]) {
+                                            labels[(currentInputLabelIndex-4) + i].style.background = "#af9a3b"
+                                            colorKeyboard(userWord[i], "#af9a3b");
+                                        }
+                                    }
+                                }
                             }
                         }
+                        userWord = "";
                     }
-                }
-            }
-            userWord = "";
+                    else {
+                        notValidWord();
+                        ignoreBackspace = false;
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                    console.error("There was error in checking if this is a valid word. Please refresh and try again :(")
+                })
         }
     })
 }
@@ -210,25 +221,49 @@ function winMessage(labels, maxInputLabelIndexReached) {
 
 
     okayButton.addEventListener("click", () => {
-        console.log(maxInputLabelIndexReached)
-        // Do something when the "Okay" button is clicked
+        resetLabels()
+    });
+
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" && document.querySelector('body .win-message')) {
+            resetLabels()
+        }
+    })
+
+    noButton.addEventListener("click", () => {
         message.remove();
         modalBackdrop.classList.add("hidden");
+        window.location.href = "/"
+    });
+
+    function resetLabels() {
+        modalBackdrop.classList.add("hidden");
+        message.remove();
         for (let i = 0; i <= maxInputLabelIndexReached; i++) {
             labels[i].style.background = "none";
             labels[i].style.border = "solid #3a3a3c 2px";
             labels[i].textContent = "";
         }
         resetKeyboardColor();
-    });
+    }
 
-    noButton.addEventListener("click", () => {
-        // Do something when the "No" button is clicked
-        message.remove();
-        modalBackdrop.classList.add("hidden");
-        window.location.href = "/"
-    });
     return ["", false]
+}
+
+function notValidWord() {
+
+    const body = document.querySelector("body");
+    const message = document.createElement("div");
+    message.classList.add('invalid-word-message');
+    message.textContent = "Not in word list";
+
+    // Add the message element to the body
+    body.appendChild(message);
+
+    // Remove the message after 2 seconds
+    setTimeout(function() {
+        message.classList.add('hide');
+    }, 1500);
 }
 
 function colorKeyboard(letter, color) {
@@ -259,6 +294,7 @@ async function newChosenWord() {
 }
 
 async function checkWord(userWord){
+    let response;
     await fetch("/checkWord", {
         method: "POST",
         headers: {
@@ -268,7 +304,8 @@ async function checkWord(userWord){
     })
         .then(response => response.json())
         .then(data => {
-            console.log("received from server: ", data.responseString)
+            response = data.response
         })
 
+    return response
 }
