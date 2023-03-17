@@ -568,3 +568,4 @@ function timeAgo(timestamp) {
     return "Just now";
 }
 
+export { fetchWord };
