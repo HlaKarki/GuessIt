@@ -1,5 +1,11 @@
-if(window.location.href === "http://localhost:3000/gameplay-v.2.html") {
+import { fetchWord } from './script.js';
 
+if(window.location.href === "http://localhost:3000/gameplay-v.2.html") {
+    let chosenWord = ""
+    fetchWord('5')
+        .then(word => {
+            chosenWord = word.toUpperCase();
+        })
     // ********* setting up **************
         createKeyboard()
         createInputLabels()
@@ -7,37 +13,80 @@ if(window.location.href === "http://localhost:3000/gameplay-v.2.html") {
 
     const labels = document.getElementsByClassName("input-label")
     let ignoreInput = false;
-    let answerArray = [];
+    let ignoreBackspace = false;
     let userWord = "";
-    document.addEventListener('keydown', function(event) {
+    let currentInputLabelIndex = 0;
+    document.addEventListener('keydown',  function (event) {
         if (isAlpha(event.key) && !ignoreInput) {
+            ignoreBackspace = false;
+            // updating the input label and the userWord variable
             for (let j = 0; j < labels.length; j++) {
                 if (labels[j].textContent === "") {
                     labels[j].textContent = event.key.toUpperCase();
                     userWord += event.key.toUpperCase();
+                    // keep track of label no.
+                    currentInputLabelIndex = j;
                     if (j % (5) === 4) {
                         ignoreInput = true;
-                        answerArray.push(userWord);
                     }
                     break;
                 }
             }
-        }
-        else if (event.key === "Backspace") {
-            const reversedLabels = Array.from(labels).reverse();
-            for (let i = 0; i < reversedLabels.length; i++) {
-                if ( reversedLabels[i].textContent ) {
-                    if (i % 5 === 0) {
-                        ignoreInput = false;
-                    }
-                    reversedLabels[i].textContent = "";
-                    break;
-                }
+            console.log(currentInputLabelIndex % 5)
+        } else if (event.key === "Backspace" && !ignoreBackspace) {
+            // don't let back spacing jump from current attempt to previous attempt
+            if (currentInputLabelIndex % 5 === 0) {
+                console.log(currentInputLabelIndex+" "+labels[currentInputLabelIndex].textContent)
+                ignoreBackspace = true;
             }
-        }
-        else if (event.key === "Enter" && ignoreInput) {
-            console.log(answerArray)
+            labels[currentInputLabelIndex].textContent = "";
+            userWord = userWord.slice(0, -1);
+            currentInputLabelIndex -= 1;
+            if (currentInputLabelIndex % 5 !== 0) {
+                ignoreInput = false;
+            }
+        } else if (event.key === "Enter" && ignoreInput) {
             ignoreInput = false;
+            ignoreBackspace = true;
+
+            console.log("chosenWord: ", chosenWord)
+            console.log("userWord: ", userWord)
+            // if answer is correct
+            if (chosenWord === userWord) {
+                for (let i = 0; i < 5; i++) {
+                    labels[(currentInputLabelIndex-4) + i].style.background = "#52894e"
+                }
+                ignoreInput = true;
+                [userWord, ignoreInput] = winMessage(labels, currentInputLabelIndex);
+                newChosenWord().then(newWord => {
+                    chosenWord = newWord;
+                });
+
+            } else {
+                for (let i = 0; i < userWord.length; i++) {
+                    // setting incorrect answer to black
+                    if (!chosenWord.includes(userWord[i])) {
+                        labels[(currentInputLabelIndex-4) + i].style.background = "#3a3a3c"
+                        colorKeyboard(userWord[i], "#3a3a3c");
+                    }
+                    // setting border to none
+                    labels[(currentInputLabelIndex-4) + i].style.border = "none";
+
+                    // if correct letter
+                    if (chosenWord[i] === userWord[i]) {
+                        labels[(currentInputLabelIndex-4) + i].style.background = "#52894e"
+                        colorKeyboard(userWord[i], "#52894e");
+                    } else {
+                        for (let j = 0; j < userWord.length; j++) {
+                            // if semi-correct
+                            if (chosenWord[i] === userWord[j]) {
+                                labels[(currentInputLabelIndex-4) + j].style.background = "#af9a3b"
+                                colorKeyboard(userWord[j], "#af9a3b");
+                            }
+                        }
+                    }
+                }
+            }
             userWord = "";
         }
     })
@@ -121,6 +170,90 @@ function createInputLabels() {
         }
     }
 }
+
 function isAlpha(character) {
     return /^[A-Za-z]$/.test(character);
+}
+
+function winMessage(labels, maxInputLabelIndexReached) {
+    // fade out the background
+    const modalBackdrop = document.getElementById("modal-backdrop");
+    modalBackdrop.classList.remove("hidden");
+
+    const body = document.querySelector("body");
+    const message = document.createElement("div");
+    message.classList.add('win-message');
+    message.textContent = "Well Done!\nWould you like to guess another word?";
+
+    // Create a new div element for the buttons
+    const buttonsDiv = document.createElement("div");
+    buttonsDiv.classList.add("win-message-buttons")
+
+    const noButton = document.createElement("button");
+    noButton.classList.add('no-button')
+    noButton.textContent = "No";
+
+    // Create two new button elements
+    const okayButton = document.createElement("button");
+    okayButton.classList.add('okay-button')
+    okayButton.textContent = "Okay";
+
+    // Append the buttons to the buttonsDiv element
+    buttonsDiv.appendChild(noButton);
+    buttonsDiv.appendChild(okayButton);
+
+    // Append the buttons to the message element
+    message.appendChild(buttonsDiv);
+
+    // Add the message element to the body
+    body.appendChild(message);
+
+
+    okayButton.addEventListener("click", () => {
+        console.log(maxInputLabelIndexReached)
+        // Do something when the "Okay" button is clicked
+        message.remove();
+        modalBackdrop.classList.add("hidden");
+        for (let i = 0; i <= maxInputLabelIndexReached; i++) {
+            labels[i].style.background = "none";
+            labels[i].style.border = "solid #3a3a3c 2px";
+            labels[i].textContent = "";
+        }
+        resetKeyboardColor();
+    });
+
+    noButton.addEventListener("click", () => {
+        // Do something when the "No" button is clicked
+        message.remove();
+        modalBackdrop.classList.add("hidden");
+        window.location.href = "/"
+    });
+    return ["", false]
+}
+
+function colorKeyboard(letter, color) {
+    const keyboardKeys = document.getElementsByClassName("keyboard-key");
+    for ( let k = 0; k < keyboardKeys.length; k++) {
+        if (keyboardKeys[k].textContent === letter) {
+            keyboardKeys[k].style.background = color
+            keyboardKeys[k].style.border = "none";
+        }
+    }
+}
+
+function resetKeyboardColor() {
+    const keyboardKeys = document.getElementsByClassName("keyboard-key");
+    for ( let k = 0; k < keyboardKeys.length; k++) {
+        keyboardKeys[k].style.background = "#818384"
+        keyboardKeys[k].style.border = "solid gray 1px;";
+    }
+}
+
+async function newChosenWord() {
+    let chosenWord
+    await fetchWord('5')
+        .then(word => {
+            chosenWord = word.toUpperCase();
+        })
+    return chosenWord
 }
