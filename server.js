@@ -23,10 +23,10 @@ app.post("/word", (req, res) => {
             const randomIndex = Math.floor(Math.random() * words[wordLength].length);
             let randomWord = words[wordLength][randomIndex];
 
-            while (hasDuplicateLetters(randomWord)) {
-                const randomIndex = Math.floor(Math.random() * words[wordLength].length);
-                randomWord = words[wordLength][randomIndex];
-            }
+            // while (hasDuplicateLetters(randomWord)) {
+            //     const randomIndex = Math.floor(Math.random() * words[wordLength].length);
+            //     randomWord = words[wordLength][randomIndex];
+            // }
             console.log("random word chosen: ", randomWord)
 
             const responseString = randomWord.toLowerCase() ;
@@ -37,18 +37,19 @@ app.post("/word", (req, res) => {
         }
     })
 
-    function hasDuplicateLetters(s) {
-        for (let i = 0; i < s.length; i++) {
-            for (let j = i + 1; j < s.length; j++) {
-                if (s[i] === s[j]) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
+    // function hasDuplicateLetters(s) {
+    //     for (let i = 0; i < s.length; i++) {
+    //         for (let j = i + 1; j < s.length; j++) {
+    //             if (s[i] === s[j]) {
+    //                 return true;
+    //             }
+    //         }
+    //     }
+    //     return false;
+    // }
 })
 
+// check if the word user input is in the list
 
 // when feedback page is loaded, returns the feedbacks store in the JSON file
 app.get('/getData', function(req, res) {
