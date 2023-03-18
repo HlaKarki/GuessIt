@@ -191,6 +191,7 @@ body {
     text-align: center;
     white-space: pre-wrap;
 
+    z-index: 1000;
 }
 
 .fade-in-animation {
