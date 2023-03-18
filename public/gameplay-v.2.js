@@ -40,6 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
         fetchWord('5')
             .then(word => {
                 chosenWord = word.toUpperCase();
+                notValidWord("Reset successful!")
             })
     })
     feedbackButton.addEventListener('click', function() {
@@ -208,7 +209,7 @@ async function processWord(ignoreBackspace, currentInputLabelIndex, ignoreInput,
             }
             userWord = "";
         } else {
-            notValidWord();
+            notValidWord("Not in word list");
             ignoreBackspace = false;
         }
 
@@ -367,11 +368,11 @@ function winMessage(labels, maxInputLabelIndexReached, messageTextContent) {
     return ["", false]
 }
 
-function notValidWord() {
+function notValidWord(textMessage) {
     const body = document.querySelector("body");
     const message = document.createElement("div");
     message.classList.add('invalid-word-message', 'fade-in-message');
-    message.textContent = "Not in word list";
+    message.textContent = textMessage;
 
     // Add the message element to the body
     body.appendChild(message);
