@@ -1,11 +1,15 @@
-import { fetchWord, addNewFeedback } from './script.js';
+import { addNewFeedback } from './feedback.js';
 
-if(window.location.href === "http://localhost:3000/gameplay-v.2.html") {
+/* Show the body after the page is fully loaded */
+window.onload = function() {
+    document.body.style.display = "block";
+};
 
-    /* Show the body after the page is fully loaded */
-    window.onload = function() {
-        document.body.style.display = "block";
-    };
+document.addEventListener('DOMContentLoaded', function() {
+    // ********* setting up **************
+    createKeyboard()
+    createInputLabels()
+    // ***********************************
 
     let chosenWord = ""
     const winTextContext = "Well Done!\nWould you like to guess another word?";
@@ -17,9 +21,8 @@ if(window.location.href === "http://localhost:3000/gameplay-v.2.html") {
     const resetButton = document.getElementById('resetButton')
     const feedbackButton = document.getElementById('feedbackButton')
 
-    homeButton.addEventListener('click', function() {
-        window.location.href = "/"
-    })
+    homeButton.addEventListener('click', goBackHome);
+
     resetButton.addEventListener('click', function() {
         for (let i = 0; i <= currentInputLabelIndex; i++) {
             labels[i].style.background = "none";
@@ -62,10 +65,7 @@ if(window.location.href === "http://localhost:3000/gameplay-v.2.html") {
             chosenWord = word.toUpperCase();
             lostTextContext = "Oops!\nThe correct word was " + chosenWord + "!\nWould you like to guess another word?";
         })
-    // ********* setting up **************
-        createKeyboard()
-        createInputLabels()
-    // ***********************************
+
 
     const labels = document.getElementsByClassName("input-label")
     let ignoreInput = false;
@@ -171,10 +171,35 @@ if(window.location.href === "http://localhost:3000/gameplay-v.2.html") {
                 })
         }
     })
+});
+// ******************* helper functions **********************
+
+// go back to home page
+function goBackHome() {
+    window.location.href = "/home.html";
 }
 
+// call to server to request a random word
+async function fetchWord(word_length){
+    let chosenWord
+    await fetch("/word", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ word: word_length})
+    })
+        .then(response => response.json())
+        .then(data => {
+            chosenWord = data.responseString
+            console.log("received from server: ", chosenWord)
+            // chosenWord = data.responseString.toLowerCase()
+            // updateArrayW(chosenWord)
+        })
 
-// helper functions
+    return chosenWord
+}
+
 function createKeyboard() {
     const qwertyAlphabet = [
         "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P",
