@@ -1,9 +1,32 @@
 import { fetchWord } from './script.js';
 
 if(window.location.href === "http://localhost:3000/gameplay-v.2.html") {
+
     let chosenWord = ""
     const winTextContext = "Well Done!\nWould you like to guess another word?";
     let lostTextContext = "";
+
+    // when home button is clicked
+    const homeButton = document.getElementById('homeButton')
+    homeButton.addEventListener('click', function() {
+        window.location.href = "/"
+    })
+    const resetButton = document.getElementById('resetButton')
+    resetButton.addEventListener('click', function() {
+        for (let i = 0; i <= currentInputLabelIndex; i++) {
+            labels[i].style.background = "none";
+            labels[i].style.border = "solid #3a3a3c 2px";
+            labels[i].textContent = "";
+            labels[i].classList.remove("scale-up-animation");
+        }
+        ignoreInput = false;
+        resetKeyboardColor();
+        fetchWord('5')
+            .then(word => {
+                chosenWord = word.toUpperCase();
+            })
+    })
+
     fetchWord('5')
         .then(word => {
             chosenWord = word.toUpperCase();
