@@ -9,24 +9,24 @@ let alphabets = ["a", "b", "d", "e", "f", "g",
     "o", "p", "r", "s", "t", "w"];
 // *********************************************************
 
+/* Show the body after the page is fully loaded */
+window.onload = function() {
+    document.body.style.display = "block";
+};
 
 // ***************** home page javascript **************************
 if (currentUrl === "http://localhost:3000/index.html" || currentUrl === "http://localhost:3000/") {
-    const beginButtonV1 = document.getElementById("begin-button")
     const beginButtonV2 = document.getElementById("begin-version2-button")
-    const settingsButton = document.getElementById("settings-button")
+    // const settingsButton = document.getElementById("settings-button")
     const aboutButton = document.getElementById("about-button")
     const feedbackButton = document.getElementById("about-feedback")
 
-    beginButtonV1.addEventListener("click", function () {
-        window.location.href = "/gameplay.html";
-    })
     beginButtonV2.addEventListener("click", function () {
         window.location.href = "/gameplay-v.2.html";
     })
-    settingsButton.addEventListener("click", function (){
-        window.location.href = "/settings.html"
-    })
+    // settingsButton.addEventListener("click", function (){
+    //     window.location.href = "/settings.html"
+    // })
 
     aboutButton.addEventListener("click", function (){
         window.location.href = "/about.html"
@@ -61,7 +61,7 @@ if (currentUrl === "http://localhost:3000/settings.html") {
 
 // ***************** about page javascript **************************
 else if (currentUrl === "http://localhost:3000/about.html") {
-    const homeButton = document.getElementById("about-home-button");
+    const homeButton = document.getElementById("homeButton");
     homeButton.addEventListener("click", goBackHome);
 }
 //*************************************************************
@@ -352,6 +352,7 @@ if (currentUrl === "http://localhost:3000/feedback.html") {
     const feedbackForm = document.querySelector('.feedback-form');
     const submitButton = document.getElementById("feedback-submit");
     const homeButton = document.getElementById("feedback-home-button");
+    const feedbackCloseButton = document.getElementById("feedback-close");
     // *********************************************
 
     homeButton.addEventListener("click", goBackHome);
@@ -364,7 +365,13 @@ if (currentUrl === "http://localhost:3000/feedback.html") {
 
     // when submit button is clicked, add the new feedback to the JSON file
     submitButton.addEventListener("click", function() {
-        addNewFeedback(modalBackdrop, feedbackForm);
+        addNewFeedback(modalBackdrop, feedbackForm, true);
+    })
+
+    // when close button is clicked, hide the form
+    feedbackCloseButton.addEventListener("click", function() {
+        modalBackdrop.classList.add("hidden");
+        feedbackForm.classList.add('hidden');
     })
 }
 // ************************************************************************
@@ -483,7 +490,7 @@ async function fetchFeedbacks(){
     })
         .then(response => response.json())
         .then(data => {
-            console.log(data)
+            // console.log(data)
             // Loop through each feedback item and create an element for it
             data.forEach(feedback => {
                 const feedbackItem = document.createElement("div");
@@ -503,14 +510,15 @@ async function fetchFeedbacks(){
                 timestamp.textContent = timeAgo(feedback.time)
                 feedbackItem.appendChild(timestamp);
 
-                feedbacks.appendChild(feedbackItem);
+                // feedbacks.appendChild(feedbackItem);
+                feedbacks.insertBefore(feedbackItem, feedbacks.firstChild);
             })
         })
         .catch(error => console.error(error));
 }
 
 // add the user input feedback data to the JSON file
-async function addNewFeedback(modalBackdrop, feedbackForm) {
+async function addNewFeedback(modalBackdrop, feedbackForm, fetchFeeds) {
     const feedbackName = document.getElementById("feedback-name");
     const feedback = document.getElementById("feedback-feedback");
     const timeNow = new Date().toISOString();
@@ -536,7 +544,7 @@ async function addNewFeedback(modalBackdrop, feedbackForm) {
 
                 feedbackName.value = "";
                 feedback.value = "";
-                fetchFeedbacks();
+                if (fetchFeeds) {fetchFeedbacks();}
             }
             else {
                 alert("There was an error submitting your feedback. Please try again later.")
@@ -572,4 +580,4 @@ function timeAgo(timestamp) {
     return "Just now";
 }
 
-export { fetchWord };
+export { fetchWord, addNewFeedback };
