@@ -8,6 +8,10 @@ app.use(express.json())
 // serve files in the public folder using express
 app.use(express.static('public'));
 
+app.get('/', (req, res) => {
+    res.sendFile('home.html', { root: __dirname + "/public"});
+});
+
 // fetch word function is received here, returns a random word
 app.post("/word", (req, res) => {
     let wordLength = req.body.word;
