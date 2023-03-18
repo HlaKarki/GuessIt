@@ -1,6 +1,6 @@
 node_modules/
 package-lock.json
 nodemon.json
-package.json
+#package.json
 Project_Default.xml
 vcs.xml
