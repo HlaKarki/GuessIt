@@ -1,17 +1,25 @@
-import { fetchWord } from './script.js';
+import { fetchWord, addNewFeedback } from './script.js';
 
 if(window.location.href === "http://localhost:3000/gameplay-v.2.html") {
+
+    /* Show the body after the page is fully loaded */
+    window.onload = function() {
+        document.body.style.display = "block";
+    };
 
     let chosenWord = ""
     const winTextContext = "Well Done!\nWould you like to guess another word?";
     let lostTextContext = "";
+    let fillingForm = false;
 
     // when home button is clicked
     const homeButton = document.getElementById('homeButton')
+    const resetButton = document.getElementById('resetButton')
+    const feedbackButton = document.getElementById('feedbackButton')
+
     homeButton.addEventListener('click', function() {
         window.location.href = "/"
     })
-    const resetButton = document.getElementById('resetButton')
     resetButton.addEventListener('click', function() {
         for (let i = 0; i <= currentInputLabelIndex; i++) {
             labels[i].style.background = "none";
@@ -25,6 +33,28 @@ if(window.location.href === "http://localhost:3000/gameplay-v.2.html") {
             .then(word => {
                 chosenWord = word.toUpperCase();
             })
+    })
+    feedbackButton.addEventListener('click', function() {
+        fillingForm = true;
+        createFeedbackForm();
+        const modalBackdrop = document.getElementById("modal-backdrop");
+        const feedbackDiv = document.querySelector(".Feedback");
+        feedbackDiv.classList.remove("hidden");
+        modalBackdrop.classList.remove("hidden");
+
+        const closeButton = document.getElementById("feedback-close");
+        const submitButton = document.getElementById("feedback-submit");
+
+        closeButton.addEventListener("click", function () {
+            modalBackdrop.classList.add("hidden");
+            feedbackDiv.classList.add("hidden");
+            fillingForm = false;
+        })
+
+        submitButton.addEventListener("click", function() {
+            addNewFeedback(modalBackdrop, feedbackDiv, false);
+            fillingForm = false;
+        })
     })
 
     fetchWord('5')
@@ -44,7 +74,7 @@ if(window.location.href === "http://localhost:3000/gameplay-v.2.html") {
     let currentInputLabelIndex = 0;
 
     document.addEventListener('keydown',  function (event) {
-        if (isAlpha(event.key) && !ignoreInput) {
+        if (isAlpha(event.key) && !ignoreInput && !fillingForm) {
             ignoreBackspace = false;
             // updating the input label and the userWord variable
             for (let j = 0; j < labels.length; j++) {
@@ -350,4 +380,60 @@ async function checkWord(userWord){
         })
 
     return response
+}
+
+function createFeedbackForm() {
+    if( !(document.querySelector('.Feedback')) ){
+        // create feedback form element
+        const feedbackForm = document.createElement('div');
+        feedbackForm.classList.add('Feedback');
+
+        // create feedback form content
+        const closeButton = document.createElement('span');
+        closeButton.id = 'feedback-close';
+        closeButton.innerHTML = '&times;';
+
+
+        const feedbackFormContent = document.createElement('div');
+        feedbackFormContent.classList.add('feedback-form');
+
+        feedbackFormContent.appendChild(closeButton);
+
+        const feedbackName = document.createElement('div');
+        feedbackName.classList.add('feedback-form-name');
+        const nameLabel = document.createElement('label');
+        nameLabel.textContent = 'Name:';
+        const nameInput = document.createElement('input');
+        nameInput.type = 'text';
+        nameInput.id = 'feedback-name';
+        nameInput.name = 'feedback-name';
+        feedbackName.appendChild(nameLabel);
+        feedbackName.appendChild(nameInput);
+
+        const feedbackFeedback = document.createElement('div');
+        feedbackFeedback.classList.add('feedback-form-feedback');
+        const feedbackLabel = document.createElement('label');
+        feedbackLabel.textContent = 'Describe Your Feedback:';
+        const feedbackTextarea = document.createElement('textarea');
+        feedbackTextarea.id = 'feedback-feedback';
+        feedbackTextarea.name = 'feedback';
+        feedbackTextarea.rows = 5;
+        feedbackTextarea.cols = 40;
+        feedbackFeedback.appendChild(feedbackLabel);
+        feedbackFeedback.appendChild(feedbackTextarea);
+
+        const feedbackSubmit = document.createElement('input');
+        feedbackSubmit.type = 'submit';
+        feedbackSubmit.id = 'feedback-submit';
+        feedbackSubmit.value = 'Submit';
+
+        feedbackFormContent.appendChild(feedbackName);
+        feedbackFormContent.appendChild(feedbackFeedback);
+        feedbackFormContent.appendChild(feedbackSubmit);
+
+        feedbackForm.appendChild(feedbackFormContent);
+
+        // append feedback form to body
+        document.body.appendChild(feedbackForm);
+    }
 }
