@@ -61,8 +61,16 @@ document.addEventListener('DOMContentLoaded', function() {
         })
 
         submitButton.addEventListener("click", function() {
-            addNewFeedback(modalBackdrop, feedbackDiv, false);
-            fillingForm = false;
+            let name = document.getElementById("feedback-name").value
+            let feedbackCon = document.getElementById("feedback-feedback").value
+            if ( name && feedbackCon ){
+                addNewFeedback(modalBackdrop, feedbackDiv, false);
+                fillingForm = false;
+            }
+            else {
+                notValidWord("Incomplete form!")
+            }
+
         })
     })
 
@@ -369,6 +377,7 @@ function winMessage(labels, maxInputLabelIndexReached, messageTextContent) {
 }
 
 function notValidWord(textMessage) {
+
     const body = document.querySelector("body");
     const message = document.createElement("div");
     message.classList.add('invalid-word-message', 'fade-in-message');
@@ -380,7 +389,9 @@ function notValidWord(textMessage) {
     // Remove the message after 2 seconds
     setTimeout(function() {
         message.classList.add('fade-out-animation');
+        message.remove();
     }, 1250);
+
 }
 
 function colorKeyboard(letter, color) {
