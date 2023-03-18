@@ -1,13 +1,15 @@
-html {
+* {
 }
 body {
     margin: 0;
-    background-color: rgba(205, 92, 92, 0.72);
-    font-family: 'IBM Plex Mono', monospace;
+    background-color: #121213;
+    /*font-family: 'IBM Plex Mono', monospace;*/
+    font-family: 'Signika Negative', sans-serif;
+
+    display: none;
 }
 
 .home-content-container{
-
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -20,24 +22,26 @@ body {
 .game-name {
     margin-top: 20px;
     font-size: 100px;
+    color: #f5f5f5;
 }
 
 .home-begin, .home-settings, .home-about, .home-feedback{
     width: 200px;
     margin-top: 20px;
-    border: 10px solid black;
+    border: 2px solid #3a3a3c;
     border-radius: 5px;
     text-align: center;
+    color: #f5f5f5;
 }
 
 #begin-button, #begin-version2-button, #settings-button, #about-button, #about-feedback {
     text-decoration: none;
-    color: black;
     font-weight: 600;
     font-size: 40px;
-
     border: none;
     background: none;
+    color: #f5f5f5;
+    padding: 10px;
 }
 
 #begin-button:hover, #about-button:hover, #settings-button:hover, #about-feedback:hover, #begin-version2-button:hover {
@@ -45,11 +49,10 @@ body {
 }
 
 #about-feedback {
-    font-size: 37px;
+    font-size: 30px;
 }
-
-#begin-button, #begin-version2-button {
-    font-size: 25px;
+#about-button {
+    font-size: 35px;
 }
 /********************* styling for gameplay page *******************/
 
@@ -239,8 +242,14 @@ body {
 
 .settings-settings {
     margin-top: 0px;
-    background-color: indianred;
+    /*background-color: indianred;*/
     padding: 10px;
+    border-bottom: solid #3a3a3c 1px;
+    color: #f5f5f5;
+}
+
+.settings-title {
+    margin: 10px;
 }
 
 .settings div {
@@ -284,8 +293,46 @@ body {
 
 /*******************************************************
 /************* styles for about page ****************/
-.nav-about {
-    padding: 0;
+.top-nav {
+    border-bottom: solid #3a3a3c 1px;
+    height: 8vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.top-nav button {
+    background-color: #dcdcdc;
+    border: none;
+    border-radius: 5px;
+    width: 5vw;
+    height: 5vh;
+}
+
+.about-title {
+    flex-grow: 1;
+    text-align: left; /* Change text alignment to left */
+    font-size: 30px;
+    color: #f5f5f5;
+    order: 1; /* Change order of element to come first */
+    margin: 10px;
+}
+
+.icons {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    font-size: 35px;
+    order: 2; /* Change order of element to come last */
+}
+
+.fa-refresh, .fa-home {
+    color: #dcdcdc;
+    margin: 0 2vw;
+}
+
+.fa-refresh:hover, .fa-home:hover {
+    cursor: pointer;
 }
 
 .about{
@@ -298,6 +345,8 @@ body {
     border-radius: 5px;
     margin: 10px 10px 10px 0px;
     padding: 5px;
+    color: #a9a9a9;
+    font-family: "IBM Plex Mono", monospace;
 }
 
 h4 {
@@ -334,35 +383,22 @@ p a{
 }
 
 .feedback-nav {
-    background-color: indianred;
     padding-top: 10px;
     display: flex;
     justify-content: space-between;
     justify-items: center;
     padding-bottom: 5px;
+    border-bottom: solid #3a3a3c 1px;
+    color: #f5f5f5;
 }
 
 .feedback-nav h1 {
     margin-left: 10px;
 }
 
-#feedback-home-button {
-    background-color: #aaec78;
-    border-radius: 5px;
-    border: none;
-    margin-left: auto;
-    width: 40px;
-    height: 40px;
-    font-size: 25px;
-    margin-right: 10px;
-}
-
-#feedback-home-button:hover {
-    cursor: pointer;
-}
-
+/* feedback button*/
 #feedback-new-form{
-    background-color: #aaec78;
+    background-color: #8d8d8d;
     border-radius: 5px;
     border: none;
     font-family: "IBM Plex Mono", monospace;
@@ -375,10 +411,11 @@ p a{
     cursor: pointer;
 }
 
+/* feedback form */
+/* feedback form */
 .feedback-form {
+    background-color: #141415;
     margin: 10px auto;
-    border: black solid 5px;
-    border-radius: 10px;
     width: 480px;
     padding: 20px;
     position: relative;
@@ -386,8 +423,33 @@ p a{
     justify-items: center;
     display: block;
     box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.25);
-    background-color: #e8b9b9;
     z-index: 102;
+
+    color: white;
+
+    /*animation*/
+    opacity: 0;
+    animation: fadeIn 0.5s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+#feedback-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 10px;
+}
+
+#feedback-close:hover {
+    cursor: pointer;
 }
 
 #modal-backdrop {
@@ -404,17 +466,48 @@ p a{
     background: rgba(0,0,0,0.5);
 }
 
+.feedback-form-name input, .feedback-form-feedback textarea{
+    background-color: #141415;
+}
+
+.feedback-form-name label {
+    margin-right: 10px;
+}
+
+.feedback-form-feedback textarea {
+    margin-top: 15px;
+}
+
+.feedback-form-name, .feedback-form-feedback {
+    margin-bottom: 20px;
+}
+
+#feedback-new-form {
+    background-color: inherit;
+}
+
 .feedback-box {
     margin: 10px;
     padding: 10px;
     border: 5px solid black;
     border-radius: 5px;
+
+    color: #F0D1D1;
+}
+
+.feedback-box h2{
+    margin-bottom: 10px;
+}
+
+.feedback-box p{
+    margin-bottom: 5px;
 }
 
 .timestamp {
     font-size: 12px;
     font-style: italic;
-    color: #414040;
+    /*color: #414040;*/
+    color: #7e7e7e;
 }
 
 input[type=text], textarea {
