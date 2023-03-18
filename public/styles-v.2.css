@@ -6,6 +6,10 @@
     font-family: 'Signika Negative', sans-serif;
 }
 
+body {
+    display: none;
+}
+
 .top-nav {
     border-bottom: solid #3a3a3c 1px;
     height: 8vh;
@@ -25,7 +29,7 @@
 .logo {
     flex-grow: 1;
     text-align: center;
-    margin-left: 10vw;
+    margin-left: 18vw;
     font-size: 30px;
     color: #f5f5f5;
 }
@@ -41,7 +45,7 @@
     margin: 0 2vw;
 }
 
-.fa-refresh:hover, .fa-home:hover {
+.fa-refresh:hover, .fa-home:hover, #feedbackButton {
     cursor: pointer;
 }
 
@@ -269,4 +273,98 @@
     100% {
         transform: scale(1);
     }
+}
+
+/***************** feedback form ****************/
+.Feedback {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 102;
+}
+
+/* feedback form */
+.feedback-form {
+    margin: 10px auto;
+    width: 480px;
+    padding: 20px;
+    position: relative;
+    justify-content: center;
+    justify-items: center;
+    display: block;
+    box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.25);
+    color: white;
+
+    /*animation*/
+    opacity: 0;
+    animation: fadeIn 0.5s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+#feedback-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 10px;
+}
+
+#feedback-close:hover {
+    cursor: pointer;
+}
+
+#modal-backdrop {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background-color: rgba(0, 0, 0, 0.85);
+}
+
+.feedback-tainted {
+    background: rgba(0,0,0,0.5);
+}
+
+.feedback-form-name, .feedback-form-feedback{
+    margin-bottom: 20px;
+}
+
+.feedback-form-name label {
+    margin-right: 10px;
+}
+
+.feedback-form-name input {
+    height: 30px;
+}
+
+.feedback-form-name input,  .feedback-form-feedback textarea{
+    border: solid gray 1px;
+    border-radius: 5px;
+    color: white;
+}
+
+.feedback-form-feedback textarea {
+    margin-top: 10px;
+}
+
+#feedback-submit {
+    border: none;
+    border-radius: 3px;
+    color: white;
+    padding: 10px 15px;
+    background-color: #4ca950;
+}
+
+#feedback-submit:hover {
+    cursor: pointer;
 }
