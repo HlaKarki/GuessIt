@@ -2,9 +2,12 @@ import { fetchWord } from './script.js';
 
 if(window.location.href === "http://localhost:3000/gameplay-v.2.html") {
     let chosenWord = ""
+    const winTextContext = "Well Done!\nWould you like to guess another word?";
+    let lostTextContext = "";
     fetchWord('5')
         .then(word => {
             chosenWord = word.toUpperCase();
+            lostTextContext = "Oops!\nThe correct word was " + chosenWord + "!\nWould you like to guess another word?";
         })
     // ********* setting up **************
         createKeyboard()
@@ -16,13 +19,16 @@ if(window.location.href === "http://localhost:3000/gameplay-v.2.html") {
     let ignoreBackspace = false;
     let userWord = "";
     let currentInputLabelIndex = 0;
+
     document.addEventListener('keydown',  function (event) {
         if (isAlpha(event.key) && !ignoreInput) {
             ignoreBackspace = false;
             // updating the input label and the userWord variable
             for (let j = 0; j < labels.length; j++) {
                 if (labels[j].textContent === "") {
+                    labels[j].classList.add("scale-up-animation");
                     labels[j].textContent = event.key.toUpperCase();
+
                     userWord += event.key.toUpperCase();
                     // keep track of label no.
                     currentInputLabelIndex = j;
@@ -32,23 +38,34 @@ if(window.location.href === "http://localhost:3000/gameplay-v.2.html") {
                     break;
                 }
             }
-        } else if (event.key === "Backspace" && !ignoreBackspace) {
+        }
+        else if (event.key === "Backspace" && !ignoreBackspace) {
             // don't let back spacing jump from current attempt to previous attempt
             if (currentInputLabelIndex % 5 === 0) {
                 ignoreBackspace = true;
             }
             labels[currentInputLabelIndex].textContent = "";
+            labels[currentInputLabelIndex].classList.remove("scale-up-animation");
             userWord = userWord.slice(0, -1);
             currentInputLabelIndex -= 1;
             if (currentInputLabelIndex % 5 !== 0) {
                 ignoreInput = false;
             }
-        } else if (event.key === "Enter" && ignoreInput) {
+        }
+        else if (event.key === "Enter" && ignoreInput) {
             checkWord(userWord)
                 .then(response => {
-                    if (response){
+                    if (response) {
                         ignoreInput = false;
                         ignoreBackspace = true;
+
+                        if (currentInputLabelIndex === 29) {
+                            [userWord, ignoreInput] = winMessage(labels, currentInputLabelIndex, lostTextContext)
+                            newChosenWord().then( ([newWord, lostText]) => {
+                                chosenWord = newWord;
+                                lostTextContext = lostText;
+                            });
+                        }
 
                         console.log("chosenWord: ", chosenWord)
                         console.log("userWord: ", userWord)
@@ -58,30 +75,31 @@ if(window.location.href === "http://localhost:3000/gameplay-v.2.html") {
                                 labels[(currentInputLabelIndex-4) + i].style.background = "#52894e"
                             }
                             ignoreInput = true;
-                            [userWord, ignoreInput] = winMessage(labels, currentInputLabelIndex);
-                            newChosenWord().then(newWord => {
+                            [userWord, ignoreInput] = winMessage(labels, currentInputLabelIndex, winTextContext);
+                            newChosenWord().then( ([newWord, lostText]) => {
                                 chosenWord = newWord;
+                                lostTextContext = lostText;
                             });
 
                         } else {
                             for (let i = 0; i < userWord.length; i++) {
                                 // setting incorrect answer to black
                                 if (!chosenWord.includes(userWord[i])) {
-                                    labels[(currentInputLabelIndex-4) + i].style.background = "#3a3a3c"
+                                    labels[(currentInputLabelIndex - 4) + i].style.background = "#3a3a3c"
                                     colorKeyboard(userWord[i], "#3a3a3c");
                                 }
                                 // setting border to none
-                                labels[(currentInputLabelIndex-4) + i].style.border = "none";
+                                labels[(currentInputLabelIndex - 4) + i].style.border = "none";
 
                                 // if correct letter
                                 if (chosenWord[i] === userWord[i]) {
-                                    labels[(currentInputLabelIndex-4) + i].style.background = "#52894e"
+                                    labels[(currentInputLabelIndex - 4) + i].style.background = "#52894e"
                                     colorKeyboard(userWord[i], "#52894e");
                                 } else {
                                     for (let j = 0; j < userWord.length; j++) {
                                         // if semi-correct
                                         if (userWord[i] === chosenWord[j]) {
-                                            labels[(currentInputLabelIndex-4) + i].style.background = "#af9a3b"
+                                            labels[(currentInputLabelIndex - 4) + i].style.background = "#af9a3b"
                                             colorKeyboard(userWord[i], "#af9a3b");
                                         }
                                     }
@@ -89,8 +107,7 @@ if(window.location.href === "http://localhost:3000/gameplay-v.2.html") {
                             }
                         }
                         userWord = "";
-                    }
-                    else {
+                    } else {
                         notValidWord();
                         ignoreBackspace = false;
                     }
@@ -186,7 +203,7 @@ function isAlpha(character) {
     return /^[A-Za-z]$/.test(character);
 }
 
-function winMessage(labels, maxInputLabelIndexReached) {
+function winMessage(labels, maxInputLabelIndexReached, messageTextContent) {
     // fade out the background
     const modalBackdrop = document.getElementById("modal-backdrop");
     modalBackdrop.classList.remove("hidden");
@@ -194,7 +211,7 @@ function winMessage(labels, maxInputLabelIndexReached) {
     const body = document.querySelector("body");
     const message = document.createElement("div");
     message.classList.add('win-message');
-    message.textContent = "Well Done!\nWould you like to guess another word?";
+    message.textContent = messageTextContent;
 
     // Create a new div element for the buttons
     const buttonsDiv = document.createElement("div");
@@ -215,6 +232,7 @@ function winMessage(labels, maxInputLabelIndexReached) {
 
     // Append the buttons to the message element
     message.appendChild(buttonsDiv);
+    message.classList.add("fade-in-animation");
 
     // Add the message element to the body
     body.appendChild(message);
@@ -243,6 +261,7 @@ function winMessage(labels, maxInputLabelIndexReached) {
             labels[i].style.background = "none";
             labels[i].style.border = "solid #3a3a3c 2px";
             labels[i].textContent = "";
+            labels[i].classList.remove("scale-up-animation");
         }
         resetKeyboardColor();
     }
@@ -251,10 +270,9 @@ function winMessage(labels, maxInputLabelIndexReached) {
 }
 
 function notValidWord() {
-
     const body = document.querySelector("body");
     const message = document.createElement("div");
-    message.classList.add('invalid-word-message');
+    message.classList.add('invalid-word-message', 'fade-in-message');
     message.textContent = "Not in word list";
 
     // Add the message element to the body
@@ -262,8 +280,8 @@ function notValidWord() {
 
     // Remove the message after 2 seconds
     setTimeout(function() {
-        message.classList.add('hide');
-    }, 1500);
+        message.classList.add('fade-out-animation');
+    }, 1250);
 }
 
 function colorKeyboard(letter, color) {
@@ -284,13 +302,14 @@ function resetKeyboardColor() {
     }
 }
 
-async function newChosenWord() {
+async function newChosenWord(lostTextContext) {
     let chosenWord
     await fetchWord('5')
         .then(word => {
             chosenWord = word.toUpperCase();
+            lostTextContext = "Oops!\nThe correct word was " + chosenWord + "!\nWould you like to guess another word?";
         })
-    return chosenWord
+    return [chosenWord, lostTextContext]
 }
 
 async function checkWord(userWord){
