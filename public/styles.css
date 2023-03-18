@@ -446,6 +446,7 @@ p a{
     top: 0;
     right: 0;
     margin: 10px;
+    /*font-size: 1000px;*/
 }
 
 #feedback-close:hover {
@@ -535,4 +536,29 @@ input[type=submit]:hover {
 
 .hidden {
     display: none;
+}
+
+
+@media only screen and (max-width: 1200px) {
+    /* Adjust the styling for screens with a maximum width of 600px */
+    .feedback-form {
+        width: 90vw;
+    }
+
+    #feedback-submit {
+        font-size: 20px;
+    }
+
+    #feedback-feedback {
+        width: 90vw;
+    }
+
+    #feedback-close {
+        font-size: 30px;
+        font-weight: bolder;
+    }
+    /* Disable double tap zoom for all elements */
+    *:not(input):not(textarea) {
+        touch-action: manipulation;
+    }
 }

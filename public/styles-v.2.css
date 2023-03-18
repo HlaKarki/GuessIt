@@ -341,7 +341,6 @@ body {
 }
 
 /**********   screen adjustments ************/
-
 @media (max-height: 600px) {
     .input-label {
         width: 5vw; /* adjust width based on viewport height */
@@ -397,6 +396,28 @@ body {
     .feedback-form {
         width: 100vw;
         padding: 3vw 3vh;
-        /*padding: 8vw 8vh;*/
+    }
+    .win-message {
+        width: 80vw;
+    }
+
+    /**** win message buttons *****/
+    .okay-button, .no-button {
+        margin: 0 10px;
+        border: 1px solid #6c6c6c;
+        border-radius: 5px;
+        background-color: inherit;
+        padding: 10px;
+        font-size: 20px;
+    }
+
+    #feedback-submit {
+        font-size: 20px;
+        border-radius: 0;
+    }
+
+    /* Disable double tap zoom for all elements */
+    *:not(input):not(textarea) {
+        touch-action: manipulation;
     }
 }
