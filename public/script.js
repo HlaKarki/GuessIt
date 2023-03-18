@@ -12,15 +12,18 @@ let alphabets = ["a", "b", "d", "e", "f", "g",
 
 // ***************** home page javascript **************************
 if (currentUrl === "http://localhost:3000/index.html" || currentUrl === "http://localhost:3000/") {
-    const beginButton = document.getElementById("begin-button")
+    const beginButtonV1 = document.getElementById("begin-button")
+    const beginButtonV2 = document.getElementById("begin-version2-button")
     const settingsButton = document.getElementById("settings-button")
     const aboutButton = document.getElementById("about-button")
     const feedbackButton = document.getElementById("about-feedback")
 
-    beginButton.addEventListener("click", function () {
+    beginButtonV1.addEventListener("click", function () {
         window.location.href = "/gameplay.html";
     })
-
+    beginButtonV2.addEventListener("click", function () {
+        window.location.href = "/gameplay-v.2.html";
+    })
     settingsButton.addEventListener("click", function (){
         window.location.href = "/settings.html"
     })
@@ -462,6 +465,7 @@ async function fetchWord(word_length){
 
     return chosenWord
 }
+
 // getting all the feedbacks from the JSON file
 async function fetchFeedbacks(){
     const feedbacks = document.getElementById("feedback-feedbacks");
