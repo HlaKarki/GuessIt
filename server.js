@@ -17,7 +17,7 @@ app.post("/word", (req, res) => {
     let wordLength = req.body.word;
     console.log("received word length: " + wordLength)
 
-    fs.readFile('/wordList.json', (error, data) => {
+    fs.readFile(__dirname + '/wordList.json', (error, data) => {
         if (error) {
             console.error(error)
             return
@@ -43,7 +43,7 @@ app.post("/checkWord", (req, res) => {
     let userWord = req.body.userWord.toLowerCase();
     console.log("received userWord: " + userWord)
 
-    fs.readFile('/wordList.json', (error, data) => {
+    fs.readFile(__dirname + '/wordList.json', (error, data) => {
         if (error) {
             console.error(error)
             res.status(500).send("Error reading word list");
@@ -67,7 +67,7 @@ app.post("/checkWord", (req, res) => {
 
 // when feedback page is loaded, returns the feedbacks store in the JSON file
 app.get('/getData', function(req, res) {
-    fs.readFile('/feedbacks.json', function(error, data) {
+    fs.readFile(__dirname + '/feedbacks.json', function(error, data) {
         if (error) {
             throw error;
         }
@@ -84,7 +84,7 @@ app.post('/addFeedback', function(req, res){
     const time = req.body.time;
 
     // Load existing feedback data from JSON
-    const feedbackData = fs.readFileSync("/feedbacks.json");
+    const feedbackData = fs.readFileSync(__dirname + '/feedbacks.json');
     const feedbacks = JSON.parse(feedbackData);
 
     // Add new feedback to array
@@ -95,7 +95,7 @@ app.post('/addFeedback', function(req, res){
     })
 
     // Save updated feedback data to JSON file
-    fs.writeFileSync("/feedbacks.json", JSON.stringify(feedbacks, null, 2));
+    fs.writeFileSync( __dirname + '/feedbacks.json', JSON.stringify(feedbacks, null, 2));
 
     // Send response indicating success
     res.sendStatus(200);
