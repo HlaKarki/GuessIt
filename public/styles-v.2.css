@@ -1,0 +1,272 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+    background-color: #121213;
+    font-family: 'Signika Negative', sans-serif;
+}
+
+.top-nav {
+    border-bottom: solid #3a3a3c 1px;
+    height: 8vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.top-nav button {
+    background-color: #dcdcdc;
+    border: none;
+    border-radius: 5px;
+    width: 5vw;
+    height: 5vh;
+}
+
+.logo {
+    flex-grow: 1;
+    text-align: center;
+    margin-left: 10vw;
+    font-size: 30px;
+    color: #f5f5f5;
+}
+
+.icons {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    font-size: 20px;
+}
+.fa-refresh, .fa-home {
+    color: #dcdcdc;
+    margin: 0 2vw;
+}
+
+.fa-refresh:hover, .fa-home:hover {
+    cursor: pointer;
+}
+
+/*keyboard styling*/
+.keyboard-container {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    align-items: center;
+    width: fit-content;
+    margin: 0 auto;
+    padding: 10px;
+    /*box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);*/
+}
+
+
+.keyboard-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 300px;
+}
+
+.keyboard-key, .enter-key, .erase-key {
+    font-size: 20px;
+    color: white;
+    border: solid gray 1px;
+    border-radius: 3px;
+    margin: 3px;
+    padding: 5px;
+    min-width: 45px;
+    min-height: 60px;
+    background-color: #818384;
+}
+
+.keyboard-key:hover, .enter-key:hover, .erase-key:hover {
+    cursor: pointer;
+
+}
+.enter-key, .erase-key {
+    font-size: 16px;
+    font-weight: bold;
+    min-width: 70px;
+    text-align: center;
+}
+
+.fa-backspace {
+    font-size: 23px;
+    padding-top: 16px;
+}
+
+
+/********** the input styling ***************/
+
+.inputs {
+    margin-top: 10vh;
+}
+
+.labels-container {
+    display: flex;
+    justify-content: center;
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: 1px;
+}
+
+.input-label {
+    border: solid #3a3a3c 2px;
+    width: 60px;
+    height: 60px;
+    margin: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 20px;
+    color: #f5f5f5;
+
+}
+
+@media (max-height: 600px) {
+    .input-label {
+        width: 5vw; /* adjust width based on viewport height */
+        height: 5vw; /* adjust height based on viewport height */
+    }
+    .inputs {
+        margin-top: 6vh;
+        width: 300px;
+        height: 0px;
+        margin-right: auto;
+        margin-left: auto;
+    }
+}
+
+@media (min-height: 601px) and (max-height: 700px) {
+    .input-label {
+        width: 6vw; /* adjust width based on viewport height */
+        height: 6vw; /* adjust height based on viewport height */
+    }
+}
+
+@media (min-height: 701px) and (max-height: 800px) {
+    .input-label {
+        width: 8vw; /* adjust width based on viewport height */
+        height: 8vw; /* adjust height based on viewport height */
+    }
+}
+
+/************ Winning message *******************/
+.win-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: lightgreen;
+    padding: 20px 10px 10px 10px;
+    border-radius: 5px;
+    text-align: center;
+    white-space: pre-wrap;
+    width: 40vw;
+
+    z-index: 101;
+}
+
+.win-message-buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    background-color: inherit;
+}
+
+.okay-button, .no-button {
+    margin: 0 10px;
+    border: none;
+    background-color: inherit;
+    padding: 10px;
+}
+
+.okay-button:hover, .no-button:hover {
+    cursor: pointer;
+    border: solid black 1px;
+    background-color: black;
+    border-radius: 5px;
+    color: white;
+    padding: 9px;
+}
+
+#modal-backdrop {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background-color: rgba(0, 0, 0, 0.85);
+}
+
+.hidden {
+    display: none;
+}
+
+
+/************ Invalid Word message *******************/
+.invalid-word-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #f5f5f5;
+    padding: 15px;
+    border-radius: 5px;
+    text-align: center;
+    white-space: pre-wrap;
+
+}
+
+.fade-in-animation {
+    /*animation*/
+    opacity: 0;
+    animation-name: fadeIn;
+    animation-duration: 0.3s;
+    animation-fill-mode: forwards;
+}
+
+.fade-out-animation {
+    animation-name: fadeOut;
+    animation-duration: 0.3s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+
+/***************** scale up animation ****************/
+.scale-up-animation {
+    animation-name: scale-up;
+    animation-duration: 0.15s;
+    animation-timing-function: ease-in-out;
+}
+
+@keyframes scale-up {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+    }
+}

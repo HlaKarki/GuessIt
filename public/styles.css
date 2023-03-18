@@ -30,7 +30,7 @@ body {
     text-align: center;
 }
 
-#begin-button, #settings-button, #about-button, #about-feedback {
+#begin-button, #begin-version2-button, #settings-button, #about-button, #about-feedback {
     text-decoration: none;
     color: black;
     font-weight: 600;
@@ -40,12 +40,16 @@ body {
     background: none;
 }
 
-#begin-button:hover, #about-button:hover, #settings-button:hover, #about-feedback:hover {
+#begin-button:hover, #about-button:hover, #settings-button:hover, #about-feedback:hover, #begin-version2-button:hover {
     cursor: pointer;
 }
 
 #about-feedback {
     font-size: 37px;
+}
+
+#begin-button, #begin-version2-button {
+    font-size: 25px;
 }
 /********************* styling for gameplay page *******************/
 
@@ -233,14 +237,6 @@ body {
     }
 }
 
-/*.settings {*/
-/*    border: 2px solid black;*/
-/*    display: block;*/
-/*    padding: 20px;*/
-/*    text-align: left;*/
-/*    width: 250px;*/
-/*}*/
-
 .settings-settings {
     margin-top: 0px;
     background-color: indianred;
@@ -317,6 +313,10 @@ p a{
 
 .about h2, .about h4, .about p {
     margin-bottom: 10px;
+}
+
+#about-home-button {
+    margin-right: 10px;
 }
 
 /*******************************************************
