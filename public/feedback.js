@@ -45,7 +45,7 @@ if (window.location.href.includes("feedback")) {
 
 // getting all the feedbacks from the JSON file
 async function fetchFeedbacks(){
-    if (!window.location.href.includes("feedback")) { return}
+    if (!window.location.href.includes("feedback")) { return }
 
     const feedbacks = document.getElementById("feedback-feedbacks");
     // first remove all the feedbacks that may be in the DOM
