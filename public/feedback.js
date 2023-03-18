@@ -1,3 +1,5 @@
+import { notValidWord } from './gameplay-v.2.js';
+
 /* Show the body after the page is fully loaded */
 window.onload = function() {
     document.body.style.display = "block";
@@ -30,7 +32,15 @@ if (window.location.href.includes("feedback")) {
 
     // when submit button is clicked, add the new feedback to the JSON file
     submitButton.addEventListener("click", function() {
-        addNewFeedback(modalBackdrop, feedbackForm, true);
+        let name = document.getElementById("feedback-name").value
+        let feedbackCon = document.getElementById("feedback-feedback").value
+        if ( name && feedbackCon ){
+            addNewFeedback(modalBackdrop, feedbackForm, true);
+        }
+        else {
+            notValidWord("Incomplete form!")
+        }
+
     })
 
     // when close button is clicked, hide the form

@@ -520,3 +520,5 @@ async function fetchWord(word_length){
 
     return chosenWord
 }
+
+export { notValidWord }
