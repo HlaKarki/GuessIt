@@ -170,12 +170,6 @@ async function processWord(ignoreBackspace, currentInputLabelIndex, ignoreInput,
             ignoreInput = false;
             ignoreBackspace = true;
 
-            if (currentInputLabelIndex === 29) {
-                [userWord, ignoreInput] = winMessage(labels, currentInputLabelIndex, lostTextContext)
-                const [newWord, lostText] = await newChosenWord();
-                chosenWord = newWord;
-                lostTextContext = lostText;
-            }
 
             console.log("chosenWord: ", chosenWord)
             console.log("userWord: ", userWord)
@@ -186,6 +180,12 @@ async function processWord(ignoreBackspace, currentInputLabelIndex, ignoreInput,
                 }
                 ignoreInput = true;
                 [userWord, ignoreInput] = winMessage(labels, currentInputLabelIndex, winTextContext);
+                const [newWord, lostText] = await newChosenWord();
+                chosenWord = newWord;
+                lostTextContext = lostText;
+            }
+            else if (currentInputLabelIndex === 29) {
+                [userWord, ignoreInput] = winMessage(labels, currentInputLabelIndex, lostTextContext)
                 const [newWord, lostText] = await newChosenWord();
                 chosenWord = newWord;
                 lostTextContext = lostText;
