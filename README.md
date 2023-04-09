@@ -21,14 +21,3 @@
             For an instance, let's say the random word chosen by the game was <a href="#">"BOAT"</a>.
             Now, if you input the word <a href="#">"Toad"</a> as your first guess, the game will realize that you actually have two letters that matches with the actual word (i.e., 'o' and 'a') and therefore, will be painted green in the "Attempt history" section.
             You may also notice that you had another letter guessed "semi"-correctly. Yes, the letter 'T' is "semi"-correct since it is in the random word but just misplaced. For such cases, the game will present it in yellow.
-
-
-
-  • UML Sequence Diagram
-  
-![image](https://user-images.githubusercontent.com/72935373/218613803-c2b497ac-c9cc-4d2c-98be-558be13bf87f.png)
-
-
-
-
-    
