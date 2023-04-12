@@ -1,6 +1,6 @@
 # GuessIt
 
-## Guessit Wordplay
+## About
 
 The game is simple: you have six chances to guess a five-letter word. With each guess, you'll receive feedback on which letters are correct and in the correct position, which letters are correct but in the wrong position, and which letters are not in the word at all. Using this feedback, you'll need to deduce the secret word before you run out of guesses.
 
