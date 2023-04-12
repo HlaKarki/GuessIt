@@ -6,7 +6,8 @@
   <title>Guessit About</title>
 
   <link rel="stylesheet" href="styles.css">
-  <script type="module" src="script.js" defer></script>
+
+  <script type="module" src="feedback.js" defer></script>
 
   <!--    font link-->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,17 +18,20 @@
 
 </head>
 <body>
+
   <div class="feedback-nav">
-    <h1 id="gameplay-attempts-left">Feedbacks</h1>
-    <button id="feedback-home-button" class="btn" title="Go back to the home page"><i class="fa fa-home"></i></button>
+    <div class="about-title">Feedbacks</div>
+    <div class="icons">
+      <img id="feedback-new-form" src="./feedbackIcon.png" alt="Feedback" style="width: 25px; height: 25px; margin-right: 2vw; margin-top: 4px" title="Make a new feedback">
+      <i class="fa fa-home" id="feedback-home-button"></i>
+    </div>
   </div>
   <div id="feedback-feedbacks"></div>
-
-  <button id="feedback-new-form">Make a new feedback</button>
 
   <div id="modal-backdrop" class="hidden"></div>
   <div class="Feedback">
       <div class="feedback-form hidden">
+        <span id="feedback-close">&times;</span>
         <div class="feedback-form-name">
           <label>Name:</label>
           <input type="text" id="feedback-name" name="feedback-name">

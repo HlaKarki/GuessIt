@@ -6,6 +6,10 @@
     font-family: 'Signika Negative', sans-serif;
 }
 
+body {
+    display: none;
+}
+
 .top-nav {
     border-bottom: solid #3a3a3c 1px;
     height: 8vh;
@@ -25,7 +29,7 @@
 .logo {
     flex-grow: 1;
     text-align: center;
-    margin-left: 10vw;
+    margin-left: 18vw;
     font-size: 30px;
     color: #f5f5f5;
 }
@@ -41,11 +45,11 @@
     margin: 0 2vw;
 }
 
-.fa-refresh:hover, .fa-home:hover {
+.fa-refresh:hover, .fa-home:hover, #feedbackButton {
     cursor: pointer;
 }
 
-/*keyboard styling*/
+/***************  keyboard styling *****************/
 .keyboard-container {
     position: fixed;
     bottom: 0;
@@ -55,7 +59,6 @@
     width: fit-content;
     margin: 0 auto;
     padding: 10px;
-    /*box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);*/
 }
 
 
@@ -96,7 +99,6 @@
 
 
 /********** the input styling ***************/
-
 .inputs {
     margin-top: 10vh;
 }
@@ -121,34 +123,6 @@
     font-size: 20px;
     color: #f5f5f5;
 
-}
-
-@media (max-height: 600px) {
-    .input-label {
-        width: 5vw; /* adjust width based on viewport height */
-        height: 5vw; /* adjust height based on viewport height */
-    }
-    .inputs {
-        margin-top: 6vh;
-        width: 300px;
-        height: 0px;
-        margin-right: auto;
-        margin-left: auto;
-    }
-}
-
-@media (min-height: 601px) and (max-height: 700px) {
-    .input-label {
-        width: 6vw; /* adjust width based on viewport height */
-        height: 6vw; /* adjust height based on viewport height */
-    }
-}
-
-@media (min-height: 701px) and (max-height: 800px) {
-    .input-label {
-        width: 8vw; /* adjust width based on viewport height */
-        height: 8vw; /* adjust height based on viewport height */
-    }
 }
 
 /************ Winning message *******************/
@@ -217,6 +191,7 @@
     text-align: center;
     white-space: pre-wrap;
 
+    z-index: 1000;
 }
 
 .fade-in-animation {
@@ -268,5 +243,182 @@
     }
     100% {
         transform: scale(1);
+    }
+}
+
+/***************** feedback form ****************/
+.Feedback {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 102;
+}
+
+/* feedback form */
+.feedback-form {
+    margin: 10px auto;
+    width: 480px;
+    padding: 20px;
+    position: relative;
+    justify-content: center;
+    justify-items: center;
+    display: block;
+    box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.25);
+    color: white;
+
+    /*animation*/
+    opacity: 0;
+    animation: fadeIn 0.5s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+#feedback-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-right: 10px;
+    font-size: 30px;
+}
+
+#feedback-close:hover {
+    cursor: pointer;
+}
+
+#modal-backdrop {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background-color: rgba(0, 0, 0, 0.85);
+}
+
+.feedback-tainted {
+    background: rgba(0,0,0,0.5);
+}
+
+.feedback-form-name, .feedback-form-feedback{
+    margin-bottom: 20px;
+}
+
+.feedback-form-name label {
+    margin-right: 10px;
+}
+
+.feedback-form-name input {
+    height: 30px;
+}
+
+.feedback-form-name input,  .feedback-form-feedback textarea{
+    border: solid gray 1px;
+    border-radius: 5px;
+    color: white;
+}
+
+.feedback-form-feedback textarea {
+    margin-top: 10px;
+}
+
+#feedback-submit {
+    border: none;
+    border-radius: 3px;
+    color: white;
+    padding: 10px 15px;
+    background-color: #4ca950;
+}
+
+#feedback-submit:hover {
+    cursor: pointer;
+}
+
+/**********   screen adjustments ************/
+@media (max-height: 600px) {
+    .input-label {
+        width: 5vw; /* adjust width based on viewport height */
+        height: 5vw; /* adjust height based on viewport height */
+    }
+    .inputs {
+        margin-top: 6vh;
+        width: 300px;
+        height: 0px;
+        margin-right: auto;
+        margin-left: auto;
+    }
+}
+
+@media (min-height: 601px) and (max-height: 700px) {
+    .input-label {
+        width: 6vw; /* adjust width based on viewport height */
+        height: 6vw; /* adjust height based on viewport height */
+    }
+}
+
+@media (min-height: 701px) and (max-height: 800px) {
+    .input-label {
+        width: 8vw; /* adjust width based on viewport height */
+        height: 8vw; /* adjust height based on viewport height */
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    /* Adjust the styling for screens with a maximum width of 600px */
+
+    /*input buttons*/
+    .input-label {
+        width: 12vw; /* adjust width based on viewport height */
+        height: 12vw; /* adjust height based on viewport height */
+    }
+    .keyboard-key, .enter-key, .erase-key {
+        font-size: 20px;
+        min-width: 8vw;
+        min-height: 6vh;
+    }
+    .enter-key {
+        font-size: 14px;
+    }
+    .fa-backspace {
+        font-size: 20px;
+        padding-top: 13px;
+    }
+    .enter-key, .erase-key {
+        min-width: 13vw;
+    }
+
+    .feedback-form {
+        width: 100vw;
+        padding: 3vw 3vh;
+    }
+    .win-message {
+        width: 80vw;
+    }
+
+    /**** win message buttons *****/
+    .okay-button, .no-button {
+        margin: 0 10px;
+        border: 1px solid #6c6c6c;
+        border-radius: 5px;
+        background-color: inherit;
+        padding: 10px;
+        font-size: 20px;
+    }
+
+    #feedback-submit {
+        font-size: 20px;
+        border-radius: 0;
+    }
+
+    /* Disable double tap zoom for all elements */
+    *:not(input):not(textarea) {
+        touch-action: manipulation;
     }
 }

@@ -9,66 +9,14 @@ let alphabets = ["a", "b", "d", "e", "f", "g",
     "o", "p", "r", "s", "t", "w"];
 // *********************************************************
 
+/* Show the body after the page is fully loaded */
+window.onload = function() {
+    document.body.style.display = "block";
+};
 
-// ***************** home page javascript **************************
-if (currentUrl === "http://localhost:3000/index.html" || currentUrl === "http://localhost:3000/") {
-    const beginButtonV1 = document.getElementById("begin-button")
-    const beginButtonV2 = document.getElementById("begin-version2-button")
-    const settingsButton = document.getElementById("settings-button")
-    const aboutButton = document.getElementById("about-button")
-    const feedbackButton = document.getElementById("about-feedback")
-
-    beginButtonV1.addEventListener("click", function () {
-        window.location.href = "/gameplay.html";
-    })
-    beginButtonV2.addEventListener("click", function () {
-        window.location.href = "/gameplay-v.2.html";
-    })
-    settingsButton.addEventListener("click", function (){
-        window.location.href = "/settings.html"
-    })
-
-    aboutButton.addEventListener("click", function (){
-        window.location.href = "/about.html"
-    })
-
-    feedbackButton.addEventListener("click", function() {
-        window.location.href = "/feedback.html"
-    })
-}
-//*************************************************************
-
-
-//***************** settings page javascript **************************
-if (currentUrl === "http://localhost:3000/settings.html") {
-    const allowed_attempts = document.getElementById("allowed-attempts-number");
-    const word_lengthId = document.getElementById("word-length-number")
-    const settingDoneButton = document.getElementById("settings-done-button")
-
-    settingDoneButton.addEventListener("click", function() {
-        // store user customized settings in browser storage //
-        localStorage.setItem("attempts", allowed_attempts.value)
-        attempt_setting = allowed_attempts.value
-
-        localStorage.setItem("word-length", word_lengthId.value)
-        word_length = word_lengthId.value
-
-        goBackHome();
-    })
-}
-//*************************************************************
-
-
-// ***************** about page javascript **************************
-else if (currentUrl === "http://localhost:3000/about.html") {
-    const homeButton = document.getElementById("about-home-button");
-    homeButton.addEventListener("click", goBackHome);
-}
-//*************************************************************
 
 
 //***************** gameplay page js **************************
-else if (currentUrl === "http://localhost:3000/gameplay.html") {
     // add the input buttons first dynamically (to clean up gameplay html page)
     // the button labels are temporarily named 1-18, updated later
     const inputButtons = document.querySelector(".random-words");
@@ -336,38 +284,8 @@ else if (currentUrl === "http://localhost:3000/gameplay.html") {
             goBackHome()
         }
     })
-}
 
-//***************** feedback page javascript **************************
-if (currentUrl === "http://localhost:3000/feedback.html") {
 
-    // load the feedbacks in the JSON file when window is loaded
-    window.addEventListener('load', function () {
-        fetchFeedbacks()
-    })
-
-    // ********** variable declaration *************
-    const newFeedbackFormButton = document.getElementById("feedback-new-form");
-    const modalBackdrop = document.getElementById("modal-backdrop");
-    const feedbackForm = document.querySelector('.feedback-form');
-    const submitButton = document.getElementById("feedback-submit");
-    const homeButton = document.getElementById("feedback-home-button");
-    // *********************************************
-
-    homeButton.addEventListener("click", goBackHome);
-
-    // display the form when the button is clicked
-    newFeedbackFormButton.addEventListener("click", function(){
-        modalBackdrop.classList.remove("hidden");
-        feedbackForm.classList.remove('hidden');
-    })
-
-    // when submit button is clicked, add the new feedback to the JSON file
-    submitButton.addEventListener("click", function() {
-        addNewFeedback(modalBackdrop, feedbackForm);
-    })
-}
-// ************************************************************************
 
 
 // *************************** helper functions ***************************
@@ -434,12 +352,6 @@ function reset(attempts_left, gameplay_attempts_left) {
     return attempts_left
 }
 
-// go back to home page
-function goBackHome() {
-    let indexURL = currentUrl.indexOf("/")
-    window.location.href = currentUrl.substring(0, indexURL) + "index.html";
-}
-
 // update the buttons' label with the shuffled alphabets array elements
 function updateRandomList(buttons){
     for (let i = 0; i < buttons.length; i++) {
@@ -447,129 +359,9 @@ function updateRandomList(buttons){
     }
 }
 
-// call to server to request a random word
-async function fetchWord(word_length){
-    await fetch("/word", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ word: word_length})
-    })
-        .then(response => response.json())
-        .then(data => {
-            console.log("received from server: ", data.responseString)
-            chosenWord = data.responseString.toLowerCase()
-            updateArrayW(chosenWord)
-        })
-
-    return chosenWord
+// go back to home page
+function goBackHome() {
+    window.location.href = "/home.html";
 }
 
-// getting all the feedbacks from the JSON file
-async function fetchFeedbacks(){
-    const feedbacks = document.getElementById("feedback-feedbacks");
-    // first remove all the feedbacks that may be in the DOM
-    while (feedbacks.firstChild) {
-        feedbacks.removeChild(feedbacks.firstChild);
-    }
-
-    // get call to server to provide with the feedback data
-    await fetch("/getData", {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json"
-        }
-    })
-        .then(response => response.json())
-        .then(data => {
-            console.log(data)
-            // Loop through each feedback item and create an element for it
-            data.forEach(feedback => {
-                const feedbackItem = document.createElement("div");
-                feedbackItem.classList.add("feedback-item");
-                feedbackItem.classList.add("feedback-box"); // Add feedback-box class
-
-                const name = document.createElement("h2");
-                name.textContent = feedback.name;
-                feedbackItem.appendChild(name);
-
-                const currentFeedback = document.createElement("p");
-                currentFeedback.textContent = feedback.feedback;
-                feedbackItem.appendChild(currentFeedback);
-
-                const timestamp = document.createElement("span");
-                timestamp.classList.add("timestamp");
-                timestamp.textContent = timeAgo(feedback.time)
-                feedbackItem.appendChild(timestamp);
-
-                feedbacks.appendChild(feedbackItem);
-            })
-        })
-        .catch(error => console.error(error));
-}
-
-// add the user input feedback data to the JSON file
-async function addNewFeedback(modalBackdrop, feedbackForm) {
-    const feedbackName = document.getElementById("feedback-name");
-    const feedback = document.getElementById("feedback-feedback");
-    const timeNow = new Date().toISOString();
-
-    // post call to server with name, feedback and time data
-    await fetch('/addFeedback', {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            name: feedbackName.value,
-            feedback: feedback.value,
-            time: timeNow
-        })
-    })
-        .then(response => {
-            // hide the form again when done
-            if (response.status === 200) {
-                modalBackdrop.classList.add("hidden");
-                feedbackForm.classList.add('hidden');
-                alert("Your feedback has been submitted successfully");
-
-                feedbackName.value = "";
-                feedback.value = "";
-                fetchFeedbacks();
-            }
-            else {
-                alert("There was an error submitting your feedback. Please try again later.")
-            }
-        })
-}
-
-// formats the time data to time elapsed since format
-function timeAgo(timestamp) {
-    const now = new Date();
-    const seconds = Math.floor((now - new Date(timestamp)) / 1000);
-    let interval = Math.floor(seconds / 31536000);
-
-    if (interval >= 1) {
-        return interval + " year" + (interval === 1 ? "" : "s") + " ago";
-    }
-    interval = Math.floor(seconds / 2592000);
-    if (interval >= 1) {
-        return interval + " month" + (interval === 1 ? "" : "s") + " ago";
-    }
-    interval = Math.floor(seconds / 86400);
-    if (interval >= 1) {
-        return interval + " day" + (interval === 1 ? "" : "s") + " ago";
-    }
-    interval = Math.floor(seconds / 3600);
-    if (interval >= 1) {
-        return interval + " hour" + (interval === 1 ? "" : "s") + " ago";
-    }
-    interval = Math.floor(seconds / 60);
-    if (interval >= 1) {
-        return interval + " minute" + (interval === 1 ? "" : "s") + " ago";
-    }
-    return "Just now";
-}
-
-export { fetchWord };
+// export {fetchWord};
