@@ -1,8 +1,17 @@
 import './App.css';
+import LandingPage from "./pages/landing/landingPage";
+import GameplayPage from "./pages/gameplay/gameplayPage";
+
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 const App = () => {
   return (
-    <div>Hello, World!</div>
+      <BrowserRouter>
+          <Routes>
+              <Route path="/" element={<LandingPage />}></Route>
+              <Route path="/play" element={<GameplayPage />}></Route>
+          </Routes>
+      </BrowserRouter>
   );
 }
 
