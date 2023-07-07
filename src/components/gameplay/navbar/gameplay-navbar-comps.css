@@ -1,0 +1,38 @@
+.gameplay-navbar-feedback-button {
+    width: 25px;
+    height: 25px;
+    margin-right: 2vw;
+    margin-top: 4px;
+}
+
+.top-nav {
+    border-bottom: solid #3a3a3c 1px;
+    height: 8vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo {
+    flex-grow: 1;
+    text-align: center;
+    margin-left: 18vw;
+    font-size: 30px;
+    color: #f5f5f5;
+}
+
+.icons {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    font-size: 20px;
+}
+
+.fa-refresh, .fa-home {
+    color: #dcdcdc;
+    margin: 0 2vw;
+}
+
+.fa-refresh:hover, .fa-home:hover, #feedbackButton {
+    cursor: pointer;
+}
