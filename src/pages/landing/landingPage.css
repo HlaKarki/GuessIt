@@ -1,0 +1,60 @@
+.home-content-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.game-name {
+    margin-top: 1rem;
+    font-size: 7rem;
+    color: var(--label-color);
+    cursor: default;
+}
+
+.play-button, .about-button, .feedback-button{
+    width: 20rem;
+    height: 5rem;
+    margin-top: 1rem;
+    border: 2px solid var(--button-border-color);
+    border-radius: 5px;
+    color: var(--label-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    transition: background-color 0.3s ease-in-out;
+
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 3rem;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.play-button:hover, .about-button:hover, .feedback-button:hover{
+    background-color: var(--button-border-color);
+    text-shadow:
+            -1px -1px 5px var(--label-hover-outline-color),
+            1px -1px 5px var(--label-hover-outline-color),
+            -1px  1px 5px var(--label-hover-outline-color),
+            1px  1px 5px var(--label-hover-outline-color);
+}
+
+/* Adjust the styling for screens with a maximum width of 600px */
+@media only screen and (max-width: 600px) {
+    body {
+        overflow: hidden;
+    }
+
+    .game-name {
+        font-size: 6rem;
+    }
+
+    /* Disable double tap zoom for all elements */
+    *:not(input):not(textarea) {
+        touch-action: manipulation;
+    }
+}
