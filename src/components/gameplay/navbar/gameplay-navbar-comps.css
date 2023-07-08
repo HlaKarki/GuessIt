@@ -29,6 +29,7 @@
 }
 
 .fa-refresh, .fa-home {
+    text-decoration: none;
     color: #dcdcdc;
     margin: 0 2vw;
 }
