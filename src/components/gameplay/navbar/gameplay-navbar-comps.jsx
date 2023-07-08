@@ -9,9 +9,9 @@ const GameplayNavbar = () => {
         <div className="top-nav">
             <div className="logo">GuessiT</div>
             <div className="icons">
-                <img className="gameplay-navbar-feedback-button" id="feedbackButton" src={feedbackIcon} alt="Click to provide feedbacks for GuessIt"/>
-                <i className="fa fa-refresh" id="resetButton"></i>
-                <LinkTo page="" label="" className="fa fa-home" />
+                <img tabIndex={0} className="gameplay-navbar-feedback-button" id="feedbackButton" src={feedbackIcon} alt="Click to provide feedbacks for GuessIt"/>
+                <i tabIndex={1} className="fa fa-refresh" id="resetButton"></i>
+                <LinkTo tabIndex={2} page="" label="" className="fa fa-home" />
             </div>
         </div>
     )
