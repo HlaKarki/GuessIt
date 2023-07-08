@@ -1,0 +1,6 @@
+@media only screen and (max-width: 600px) {
+    /* Disable double tap zoom for all elements */
+    *:not(input):not(textarea) {
+        touch-action: manipulation;
+    }
+}
