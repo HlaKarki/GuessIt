@@ -1,13 +1,17 @@
 import React from "react"
 import './gameplayPage.css'
-import LinkTo from "../../components/linkTo";
+// import LinkTo from "../../components/linkTo";
 import GameplayNavbarComps from "../../components/gameplay/navbar/gameplay-navbar-comps";
+import GameplayKeyboardComps from "../../components/gameplay/keyboard/gameplay-keyboard-comps";
+import GameplayInput from "../../components/gameplay/input/gameplay-input-comps";
 
 const GameplayPage = () => {
+
     return (
-        <div>
+        <div className={"gameplay"}>
             <GameplayNavbarComps />
-            <LinkTo path="/" label="Go back to home" />
+            <GameplayInput />
+            <GameplayKeyboardComps />
         </div>
     )
 }
