@@ -12,12 +12,16 @@ const GameplayKeyboard = () => {
             const event = new KeyboardEvent('keydown', {key: value})
             window.dispatchEvent(event)
         }
-
         return (
             <button className={"keyboard-key"} onClick={handleKeyButtonClick}>{value}</button>
         )
     }
 
+    const handle_enter_backspace = (id) => {
+        const key = id === 0 ? 'Enter' : 'Backspace';
+        const event = new KeyboardEvent('keydown', { key, code: key });
+        window.dispatchEvent(event);
+    }
     const KeyboardSetUp = () => {
         return (
             <div className={"keyboard"}>
@@ -32,11 +36,11 @@ const GameplayKeyboard = () => {
                     ))}
                 </div>
                 <div className={"keyboard-row"}>
-                    <button className={"enter-key"}>ENTER</button>
+                    <button className={"enter-key"} onClick={() => handle_enter_backspace(0)}>ENTER</button>
                     {qwertyBot.map( (letter, index) => (
                         <KeyButton value={letter} key={index}/>
                     ))}
-                    <i className={"fas fa-backspace erase-key"}></i>
+                    <button className={"erase-key"} onClick={ () => handle_enter_backspace(1)}><i className={"fas fa-backspace"}></i></button>
                 </div>
             </div>
         )
