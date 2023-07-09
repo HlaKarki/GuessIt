@@ -10,8 +10,10 @@ const GameplayPage = () => {
     return (
         <div className={"gameplay"}>
             <GameplayNavbarComps />
-            <GameplayInput />
-            <GameplayKeyboardComps />
+            <div className={"gameplay-body"}>
+                <GameplayInput />
+                <GameplayKeyboardComps />
+            </div>
         </div>
     )
 }
