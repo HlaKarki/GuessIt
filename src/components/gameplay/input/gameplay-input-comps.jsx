@@ -9,7 +9,7 @@ const EmptyInputSetUp = () => {
     let colIndex = 0
     window.addEventListener('keydown', (event) => {
         if (isAlpha(event.key)){
-            document.getElementById(`input_${rowIndex}${colIndex}`).textContent = event.key
+            document.getElementById(`input_${rowIndex}${colIndex}`).textContent = event.key.toUpperCase()
 
             colIndex = (colIndex + 1) % 5
             if (colIndex === 0) {
