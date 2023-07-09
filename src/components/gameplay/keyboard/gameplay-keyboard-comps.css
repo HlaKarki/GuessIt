@@ -1,8 +1,8 @@
 .keyboard-container {
-    height: 50%;
+    /*height: 50%;*/
     align-items: center;
     max-width: fit-content;
-    margin: 3rem auto 0 auto;
+    margin: 0 auto 0 auto;
 }
 
 .keyboard-row {
@@ -18,8 +18,12 @@
     border-radius: 3px;
     margin: 3px;
     padding: 5px;
-    min-width: 45px;
-    min-height: 60px;
+
+    /*min-width: 45px;*/
+    /*min-height: 60px;*/
+    min-width: 5vh;
+    min-height: 7vh;
+
     background-color: #818384;
 }
 

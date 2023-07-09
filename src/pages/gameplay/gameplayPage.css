@@ -1,18 +1,17 @@
 body {
     font-family: 'Signika Negative', sans-serif;
     height: 100%;
+    overflow: hidden;
 }
 
-.gameplay {
-    /*width: 100vw;*/
-    /*height: 100vh;*/
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-}
+/*.gameplay {*/
+/*    height: 100%;*/
+/*}*/
 
 .gameplay-body {
-    flex-grow: 1;
+    /*height: 100%;*/
+    height: 100vh;
+    /*flex-grow: 1;*/
     display: flex;
     flex-direction: column;
 }
