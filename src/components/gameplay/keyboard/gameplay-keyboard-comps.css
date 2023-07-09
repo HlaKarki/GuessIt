@@ -1,5 +1,4 @@
 .keyboard-container {
-    /*height: 50%;*/
     align-items: center;
     max-width: fit-content;
     margin: 0 auto 0 auto;
@@ -18,9 +17,6 @@
     border-radius: 3px;
     margin: 3px;
     padding: 5px;
-
-    /*min-width: 45px;*/
-    /*min-height: 60px;*/
     min-width: 5vh;
     min-height: 7vh;
 
@@ -29,7 +25,6 @@
 
 .keyboard-key:hover, .enter-key:hover, .erase-key:hover {
     cursor: pointer;
-
 }
 
 .enter-key, .erase-key {
@@ -40,8 +35,10 @@
 }
 
 .fa-backspace {
-    font-size: 23px;
-    padding-top: 16px;
+    font-size: 1.2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 @media only screen and (max-width: 600px) {
@@ -57,8 +54,27 @@
     }
 
     .fa-backspace {
-        font-size: 20px;
-        padding-top: 13px;
+        font-size: 1.3rem;
+    }
+
+    .enter-key, .erase-key {
+        min-width: 13vw;
+    }
+}
+
+@media only screen and (min-width: 700px) and (max-width: 1024px) {
+    .keyboard-key, .enter-key, .erase-key {
+        font-size: 1.3rem;
+        min-width: 7vw;
+        min-height: 7vh;
+    }
+
+    .enter-key {
+        font-size: 1.2rem;
+    }
+
+    .fa-backspace {
+        font-size: 2rem;
     }
 
     .enter-key, .erase-key {
