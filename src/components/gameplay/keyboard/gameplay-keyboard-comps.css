@@ -1,0 +1,63 @@
+.keyboard-container {
+    height: 50%;
+    align-items: center;
+    max-width: fit-content;
+    margin: 3rem auto 0 auto;
+}
+
+.keyboard-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.keyboard-key, .enter-key, .erase-key {
+    font-size: 20px;
+    color: white;
+    border: solid gray 1px;
+    border-radius: 3px;
+    margin: 3px;
+    padding: 5px;
+    min-width: 45px;
+    min-height: 60px;
+    background-color: #818384;
+}
+
+.keyboard-key:hover, .enter-key:hover, .erase-key:hover {
+    cursor: pointer;
+
+}
+
+.enter-key, .erase-key {
+    font-size: 16px;
+    font-weight: bold;
+    min-width: 70px;
+    text-align: center;
+}
+
+.fa-backspace {
+    font-size: 23px;
+    padding-top: 16px;
+}
+
+@media only screen and (max-width: 600px) {
+
+    .keyboard-key, .enter-key, .erase-key {
+        font-size: 1.3rem;
+        min-width: 2.1rem;
+        min-height: 6vh;
+    }
+
+    .enter-key {
+        font-size: 0.8rem;
+    }
+
+    .fa-backspace {
+        font-size: 20px;
+        padding-top: 13px;
+    }
+
+    .enter-key, .erase-key {
+        min-width: 13vw;
+    }
+}
