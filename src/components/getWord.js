@@ -13,31 +13,32 @@ const fetchRandomWord = async (length) => {
         const response = await axios.get(url);
         return response.data
     } catch (error) {
-        console.error(error);
+        console.error(error)
     }
 };
 
-const fetchWordInfo = async (word) => {
+const fetchWordInfo = async (word, KEY) => {
+    console.log(process.env.REACT_APP_RAPID_API_KEY)
     const options = {
         method: 'GET',
         url: `https://wordsapiv1.p.rapidapi.com/words/${word}`,
         headers: {
-            'X-RapidAPI-Key': 'da5cb47493mshfc31e42a945beacp1ebf4fjsn27ff5e71368a',
+            'X-RapidAPI-Key' : process.env.REACT_APP_RAPID_API_KEY,
             'X-RapidAPI-Host': 'wordsapiv1.p.rapidapi.com'
         }
     };
 
     try {
-        const response = await axios.request(options);
+        const response = await axios.request(options)
         return response.data
     } catch (error) {}
 }
 
-const fetchWordInfoWithRetry = async (words) => {
+const fetchWordInfoWithRetry = async (words, KEY) => {
     console.log(`starting words: ${words}`)
     for (let i = 0; i < words.length; i++) {
         const word = words[i];
-        const wordInfo = await fetchWordInfo(word);
+        const wordInfo = await fetchWordInfo(word, KEY);
 
         if (wordInfo) {
             if (wordInfo.results && wordInfo.word.length === 5) {
@@ -55,12 +56,12 @@ const fetchWordInfoWithRetry = async (words) => {
     return null;
 };
 
-export const GetWord = () => {
+export const GetWord = (KEY) => {
     return new Promise((resolve, reject) => {
         // Usage: Pass the desired length as an argument
         fetchRandomWord(5)
             .then((randomWord) => {
-                fetchWordInfoWithRetry(randomWord)
+                fetchWordInfoWithRetry(randomWord, KEY)
                     .then((data) => {
                         console.log(data.word);
                         CHOSEN_WORD.word = data.word.toUpperCase()
