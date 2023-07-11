@@ -7,7 +7,9 @@ import { isValid } from "../../checkWord";
 const MAX_ROW_INDEX = 5
 const MAX_COL_INDEX = 4
 let CHOSEN_WORD
-GetWord()
+const KEY = process.env.REACT_APP_API_KEY
+
+GetWord(KEY)
     .then((chosenWord) => {
         // console.log(chosenWord);
         CHOSEN_WORD = chosenWord
