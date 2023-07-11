@@ -5,7 +5,7 @@ import './gameplay-input-comps.css'
 const MAX_ROW_INDEX = 5
 const MAX_COL_INDEX = 4
 
-const EmptyInputLabel = ({ value, id, row, col }) => <label className="input-label" key={id} id={`input_${row}${col}`}>{value}</label>
+const EmptyInputLabel = ({ value, row, col }) => <label className="input-label" id={`input_${row}${col}`}>{value}</label>
 
 const EmptyInputSetUp = () => {
     let rowIndex = 0
@@ -14,11 +14,11 @@ const EmptyInputSetUp = () => {
         if (isAlpha(event.key) && (rowIndex <= MAX_ROW_INDEX) && (colIndex <= MAX_COL_INDEX) ){
             if (colIndex !== 4) {
                 colIndex += 1
+                document.getElementById(`input_${rowIndex}${colIndex}`).textContent = event.key.toUpperCase()
             }
-            document.getElementById(`input_${rowIndex}${colIndex}`).textContent = event.key.toUpperCase()
         }
         else if (event.key === "Enter") {
-            if (colIndex === 4 && (rowIndex !== MAX_ROW_INDEX)) {
+            if (colIndex === MAX_COL_INDEX && (rowIndex !== MAX_ROW_INDEX)) {
                 colIndex = -1
                 rowIndex += 1
             }
