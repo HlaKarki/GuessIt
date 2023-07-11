@@ -13,7 +13,7 @@
 .keyboard-key, .enter-key, .erase-key {
     font-size: 20px;
     color: white;
-    border: solid gray 1px;
+    border: none;
     border-radius: 3px;
     margin: 3px;
     padding: 5px;
