@@ -13,7 +13,7 @@ const GameplayKeyboard = () => {
             window.dispatchEvent(event)
         }
         return (
-            <button className={"keyboard-key"} title={`Press ${value}`} aria-label={`Press ${value}`} onClick={handleKeyButtonClick}>{value}</button>
+            <button className={"keyboard-key"} title={`Press ${value}`} aria-label={`Press ${value}`} onClick={handleKeyButtonClick} id={`keyboard_${value}`}>{value}</button>
         )
     }
 
