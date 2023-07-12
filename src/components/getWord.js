@@ -1,9 +1,8 @@
 import axios from 'axios'
-import { isValid } from "./checkWord";
 
 let CHOSEN_WORD = {
     word: "",
-    definitions: []
+    definitions: ""
 }
 
 const fetchRandomWord = async (length) => {
@@ -12,60 +11,53 @@ const fetchRandomWord = async (length) => {
     try {
         const response = await axios.get(url);
         return response.data
-    } catch (error) {
-        console.error(error)
-    }
+    } catch (error) {}
 };
 
-const fetchWordInfo = async (word, KEY) => {
-    console.log(process.env.REACT_APP_RAPID_API_KEY)
-    const options = {
-        method: 'GET',
-        url: `https://wordsapiv1.p.rapidapi.com/words/${word}`,
-        headers: {
-            'X-RapidAPI-Key' : process.env.REACT_APP_RAPID_API_KEY,
-            'X-RapidAPI-Host': 'wordsapiv1.p.rapidapi.com'
-        }
-    };
-
+const fetchWordInfo = async (word) => {
+    const url = `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`;
     try {
-        const response = await axios.request(options)
-        return response.data
+        const response = await axios.get(url);
+        return ({
+            "word": response.data[0].word,
+            "definitions": response.data[0].meanings[0].definitions
+        })
     } catch (error) {}
 }
 
-const fetchWordInfoWithRetry = async (words, KEY) => {
+const fetchWordInfoWithRetry = async (words) => {
     console.log(`starting words: ${words}`)
     for (let i = 0; i < words.length; i++) {
         const word = words[i];
-        const wordInfo = await fetchWordInfo(word, KEY);
-
+        const wordInfo = await fetchWordInfo(word);
+        let defs = []
         if (wordInfo) {
-            if (wordInfo.results && wordInfo.word.length === 5) {
-                const result = await isValid(wordInfo.word);
-
-                if (result) {
-                    return wordInfo
+            for (let i = 0; i < wordInfo.definitions.length; i++){
+                if ( !(wordInfo.definitions[i].definition.includes(wordInfo.word)) ){
+                    defs.push(wordInfo.definitions[i].definition)
                 }
             }
+            wordInfo.definitions = defs
+            return wordInfo
         }
     }
-
     // No word info found for any of the words
-    console.log("No word info found");
-    return null;
+    console.log("No word info found, retrying");
+    fetchRandomWord(5)
+        .then((new_words) => {
+            return fetchWordInfoWithRetry(new_words);
+        })
 };
 
-export const GetWord = (KEY) => {
+export const GetWord = () => {
     return new Promise((resolve, reject) => {
         // Usage: Pass the desired length as an argument
         fetchRandomWord(5)
             .then((randomWord) => {
-                fetchWordInfoWithRetry(randomWord, KEY)
+                fetchWordInfoWithRetry(randomWord)
                     .then((data) => {
-                        console.log(data.word);
                         CHOSEN_WORD.word = data.word.toUpperCase()
-                        CHOSEN_WORD.definitions = data.results;
+                        CHOSEN_WORD.definitions = data.definitions;
                         resolve(CHOSEN_WORD);
                     })
                     .catch((error) => {
