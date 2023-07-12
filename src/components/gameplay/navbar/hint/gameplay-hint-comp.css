@@ -1,0 +1,18 @@
+.hint {
+    border: none;
+    background: none;
+    color: white;
+    font-size: 1rem;
+    margin-left: 3vw;
+    transition: transform 0.3s ease;
+}
+
+.hint:hover {
+    transform: scale(1.2);
+}
+
+.hint img {
+    width: 2rem;
+    height: 2rem;
+    color: white;
+}
