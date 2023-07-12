@@ -1,20 +1,18 @@
 import React from "react"
 import './gameplay-input-comps.css'
-// import LinkTo from "../../components/linkTo";
 import { GetWord } from "../../getWord";
 import { isValid } from "../../checkWord";
 
 const MAX_ROW_INDEX = 5
 const MAX_COL_INDEX = 4
 let CHOSEN_WORD
-const KEY = process.env.REACT_APP_API_KEY
 
-GetWord(KEY)
+GetWord()
     .then((chosenWord) => {
-        // console.log(chosenWord);
+        console.log("The chosenWord is: ", chosenWord);
         CHOSEN_WORD = chosenWord
     })
-    .catch((error) => {});
+    .catch((error) => {throw error});
 
 const EmptyInputLabel = ({ value, row, col }) => <label className="input-label" id={`input_${row}${col}`}>{value}</label>
 
