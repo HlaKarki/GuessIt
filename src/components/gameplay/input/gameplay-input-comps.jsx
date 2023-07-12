@@ -3,6 +3,7 @@ import './gameplay-input-comps.css'
 import { GetWord } from "../../getWord";
 import { isValid } from "../../checkWord";
 import confetti from 'canvas-confetti'
+import AlertMessage from "../../alert-message/alert_message";
 
 const MAX_ROW_INDEX = 5
 const MAX_COL_INDEX = 4
@@ -63,6 +64,7 @@ const EmptyInputSetUp = () => {
                             if (user_word === CHOSEN_WORD.word) {
                                 console.log(`good one mf, you got it right`)
                                 startConfetti()
+                                AlertMessage(`Hello, you win the correct word was ${CHOSEN_WORD.word}`, "description")
                             }
                             colIndex = -1
                             rowIndex += 1
