@@ -4,6 +4,7 @@ import './gameplayPage.css'
 import GameplayNavbarComps from "../../components/gameplay/navbar/gameplay-navbar-comps";
 import GameplayKeyboardComps from "../../components/gameplay/keyboard/gameplay-keyboard-comps";
 import GameplayInput from "../../components/gameplay/input/gameplay-input-comps";
+
 const isMobile = window.innerWidth <= 414;
 
 const GameplayPage = () => {
@@ -23,6 +24,7 @@ const GameplayPage = () => {
                 <GameplayInput />
                 <GameplayKeyboardComps />
             </div>
+            <div id={"modal-backdrop"} className={"hidden"}></div>
         </div>
     )
 }
