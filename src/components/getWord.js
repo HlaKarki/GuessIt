@@ -1,10 +1,7 @@
 import axios from 'axios'
 import { GetSynonymsAndAntonyms } from "./getSyns&Ants";
 
-let CHOSEN_WORD = {
-    word: "",
-    definitions: ""
-}
+let CHOSEN_WORD = {}
 
 const fetchRandomWord = async (length) => {
     const url = `https://random-word-api.herokuapp.com/word?number=10&length=${length}`;
@@ -61,12 +58,12 @@ export const GetWord = () => {
                     .then((data) => {
                         GetSynonymsAndAntonyms(data.word)
                             .then((syns_ants) => {
+                                CHOSEN_WORD.word = data.word.toUpperCase()
+                                CHOSEN_WORD.definitions = data.definitions;
                                 CHOSEN_WORD.synonyms = syns_ants.synonyms
                                 CHOSEN_WORD.antonyms = syns_ants.antonyms
+                                resolve(CHOSEN_WORD);
                             })
-                        CHOSEN_WORD.word = data.word.toUpperCase()
-                        CHOSEN_WORD.definitions = data.definitions;
-                        resolve(CHOSEN_WORD);
                     })
                     .catch((error) => {
                         reject(error);
