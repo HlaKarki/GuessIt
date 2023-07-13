@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { GetSynonymsAndAntonyms } from "./getSyns&Ants";
 
 let CHOSEN_WORD = {
     word: "",
@@ -56,6 +57,11 @@ export const GetWord = () => {
             .then((randomWord) => {
                 fetchWordInfoWithRetry(randomWord)
                     .then((data) => {
+                        GetSynonymsAndAntonyms(data.word)
+                            .then((syns_ants) => {
+                                CHOSEN_WORD.synonyms = syns_ants.synonyms
+                                CHOSEN_WORD.antonyms = syns_ants.antonyms
+                            })
                         CHOSEN_WORD.word = data.word.toUpperCase()
                         CHOSEN_WORD.definitions = data.definitions;
                         resolve(CHOSEN_WORD);
