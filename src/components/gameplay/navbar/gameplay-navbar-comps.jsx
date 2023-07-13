@@ -6,16 +6,22 @@ import LinkTo from "../../linkTo";
 import {getChosenWord} from "../gameplay_functions";
 
 const GameplayNavbar = () => {
-    const [chosen, setChosen] = useState("start")
+    const [word, setWord] = useState("")
+    const [definition, setDefinition] = useState([])
+    const [synonyms, setSynonyms] = useState([])
+    const [antonyms, setAntonyms] = useState([])
 
     getChosenWord
         .then(chosenWord => {
-            setChosen(chosenWord.word)
+            setWord(chosenWord.word)
+            setDefinition(chosenWord.definitions)
+            setSynonyms(chosenWord.synonyms)
+            setAntonyms(chosenWord.antonyms)
         })
 
     return (
         <div className="top-nav">
-            <Hint test_answer={chosen}/>
+            <Hint word={word} definitions={definition} synonyms={synonyms} antonyms={antonyms}/>
             <div className="logo">GuessiT</div>
             <div className="icons">
                 <img tabIndex={0} className="gameplay-navbar-feedback-button" id="feedbackButton" src={feedbackIcon} alt="Click to provide feedbacks for GuessIt"/>
