@@ -24,7 +24,6 @@ const GameplayPage = () => {
                 <GameplayInput />
                 <GameplayKeyboardComps />
             </div>
-            <div id={"modal-backdrop"} className={"hidden"}></div>
         </div>
     )
 }
