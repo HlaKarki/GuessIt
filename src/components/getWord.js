@@ -38,8 +38,10 @@ const fetchWordInfoWithRetry = async (words) => {
                     defs.push(wordInfo.definitions[i].definition)
                 }
             }
-            wordInfo.definitions = defs
-            return wordInfo
+            if (defs.length !== 0) {
+                wordInfo.definitions = defs
+                return wordInfo
+            }
         }
     }
     // No word info found for any of the words
