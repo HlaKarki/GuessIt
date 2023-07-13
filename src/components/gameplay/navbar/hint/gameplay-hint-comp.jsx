@@ -3,7 +3,7 @@ import './gameplay-hint-comp.css'
 import hintIcon from '../../../../assets/hintIcon.png'
 import HintMessage from "../../../alert-message/hint_message/hint_message";
 
-const Hint = ( {test_answer} ) => {
+const Hint = ( {word, definitions, synonyms, antonyms} ) => {
     const [ showHint, setShowHint ] = useState(false)
     const handleShowHint = () => {
         setShowHint(!showHint)
@@ -16,7 +16,7 @@ const Hint = ( {test_answer} ) => {
             </button>
             {showHint && (
                 <>
-                    <HintMessage test_answer={test_answer}/>
+                    <HintMessage word={word} definitions={definitions} synonyms={synonyms} antonyms={antonyms}/>
                     <div id={"modal-backdrop"}></div>
                 </>
             )}
