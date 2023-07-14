@@ -15,6 +15,10 @@ body {
     --label-hover-outline-color: #939393;
 }
 
+.transition-animation {
+    transition: transform 0.3s ease;
+}
+
 .hidden {
     display: none;
 }
