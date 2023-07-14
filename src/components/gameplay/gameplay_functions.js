@@ -57,6 +57,7 @@ export const gameplay_functions = (handleShowAlert, handleMessageTitle) => {
                                                 flipThis(user_word, rowIndex, i)
                                             }
                                         }
+                                        document.getElementById(`input_${rowIndex}${i}`).style.border = "none"
                                     }
                                     if (user_word === chosen.word) {
                                         console.log(`good one mf, you got it right`)
