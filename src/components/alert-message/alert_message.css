@@ -1,0 +1,18 @@
+.alert_message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--label-color);
+    background-color: #191919;
+    border-radius: 5px;
+    text-align: center;
+    z-index: 2;
+
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-evenly;
+    width: 20rem;
+    height: 15rem;
+}
