@@ -1,26 +1,3 @@
-/************ Winning message *******************/
-.win_lose_message {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: lightgreen;
-    padding: 20px 10px 10px 10px;
-    border-radius: 5px;
-    text-align: center;
-    white-space: pre-wrap;
-    width: 40vw;
-
-    z-index: 101;
-}
-
-.win_lose_buttons {
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
-    background-color: inherit;
-}
-
 .okay-button, .no-button {
     margin: 0 10px;
     border: none;
@@ -35,42 +12,4 @@
     border-radius: 5px;
     color: white;
     padding: 9px;
-}
-
-.fade-in-animation {
-    /*animation*/
-    opacity: 0;
-    animation-name: fadeIn;
-    animation-duration: 0.6s;
-    animation-fill-mode: forwards;
-}
-
-.fade-out-animation {
-    animation-name: fadeOut;
-    animation-duration: 0.6s;
-    animation-fill-mode: forwards;
-}
-
-@keyframes fadeIn {
-    0% {
-        opacity: 0;
-    }
-    50% {
-        opacity: 0.5;
-    }
-    100% {
-        opacity: 1;
-    }
-}
-
-@keyframes fadeOut {
-    0% {
-        opacity: 1;
-    }
-    50% {
-        opacity: 0.5;
-    }
-    100% {
-        opacity: 0;
-    }
 }
