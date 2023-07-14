@@ -1,4 +1,3 @@
-import React from "react"
 import './landingPage.css'
 import LinkTo from "../../components/linkTo";
 
