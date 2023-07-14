@@ -1,6 +1,6 @@
 body {
     font-family: 'Signika Negative', sans-serif;
-    overflow: hidden;
+    overflow: auto;
 }
 
 .gameplay {
@@ -17,8 +17,5 @@ body {
 @media only screen and (max-width: 1023px) {
     .gameplay-body {
         height: 95%;
-    }
-    body {
-        overflow: auto;
     }
 }
