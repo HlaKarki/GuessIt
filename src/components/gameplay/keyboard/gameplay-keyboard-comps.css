@@ -11,16 +11,12 @@
 }
 
 .keyboard-key, .enter-key, .erase-key {
-    font-size: 20px;
     color: white;
+    background-color: #818384;
     border: none;
     border-radius: 3px;
     margin: 3px;
     padding: 5px;
-    min-width: 5vh;
-    min-height: 7vh;
-
-    background-color: #818384;
 }
 
 .keyboard-key:hover, .enter-key:hover, .erase-key:hover {
@@ -28,56 +24,97 @@
 }
 
 .enter-key, .erase-key {
-    font-size: 16px;
     font-weight: bold;
-    min-width: 70px;
     text-align: center;
 }
 
 .fa-backspace {
-    font-size: 1.2rem;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-@media only screen and (max-width: 600px) {
-
+@media only screen and (max-width: 400px) {
     .keyboard-key, .enter-key, .erase-key {
         font-size: 1.3rem;
-        min-width: 2.1rem;
-        min-height: 6vh;
-    }
-
-    .enter-key {
-        font-size: 0.8rem;
-    }
-
-    .fa-backspace {
-        font-size: 1.3rem;
+        width: 1.8rem;
+        height: 2.8rem;
     }
 
     .enter-key, .erase-key {
-        min-width: 13vw;
+        font-size: 0.8rem;
+        width: 3.5rem;
+    }
+
+    .erase-key {
+        font-size: 1.2rem;
+    }
+}
+@media only screen and (min-width: 401px) and (max-width: 576px) {
+
+    .keyboard-key, .enter-key, .erase-key {
+        font-size: 1.3rem;
+        width: 2.1rem;
+        height: 3rem;
+    }
+
+    .enter-key, .erase-key {
+        font-size: 0.8rem;
+        width: 3.5rem;
+    }
+
+    .erase-key {
+        font-size: 1.2rem;
     }
 }
 
-@media only screen and (min-width: 700px) and (max-width: 1024px) {
+@media only screen and (min-width: 577px) and (max-width: 767px) {
     .keyboard-key, .enter-key, .erase-key {
         font-size: 1.3rem;
-        min-width: 7vw;
-        min-height: 7vh;
-    }
-
-    .enter-key {
-        font-size: 1.2rem;
-    }
-
-    .fa-backspace {
-        font-size: 2rem;
+        width: 3rem;
+        height: 4rem;
     }
 
     .enter-key, .erase-key {
-        min-width: 13vw;
+        font-size: 1rem;
+        width: 5rem;
+    }
+
+    .erase-key {
+        font-size: 1.3rem;
+    }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
+    .keyboard-key, .enter-key, .erase-key {
+        font-size: 1.3rem;
+        width: 3.5rem;
+        height: 4.5rem;
+    }
+
+    .enter-key, .erase-key {
+        font-size: 1rem;
+        width: 5.5rem;
+    }
+
+    .erase-key {
+        font-size: 1.5rem;
+    }
+}
+
+@media only screen and (min-width: 1024px) {
+    .keyboard-key, .enter-key, .erase-key {
+        font-size: 1.3rem;
+        width: 3.5rem;
+        height: 4.5rem;
+    }
+
+    .enter-key, .erase-key {
+        font-size: 1rem;
+        width: 5.5rem;
+    }
+
+    .erase-key {
+        font-size: 1.5rem;
     }
 }
