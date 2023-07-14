@@ -11,7 +11,7 @@ const Hint = ( {word, definitions, synonyms, antonyms} ) => {
 
     return (
         <div>
-            <button className={"hint"} onClick={() => handleShowHint()}>
+            <button className={"hint transition-animation"} onClick={() => handleShowHint()}>
                 <img src={hintIcon} alt={"hint icon"} />
             </button>
             {showHint && (
