@@ -14,7 +14,7 @@ body {
     justify-content: space-evenly;
 }
 
-@media only screen and (max-width: 576px) {
+@media only screen and (max-width: 1023px) {
     .gameplay-body {
         height: 95%;
     }
