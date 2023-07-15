@@ -8,6 +8,7 @@ const fetchRandomWord = async (length) => {
 
     try {
         const response = await axios.get(url);
+        // response.data[0] = "cuppy"
         return response.data
     } catch (error) {}
 };
