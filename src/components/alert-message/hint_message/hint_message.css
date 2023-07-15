@@ -1,3 +1,19 @@
-.hint_definitions {
-    margin: 0 1rem;
+.hint_navbar {
+    display: flex;
+    flex-direction: row;
+    border: 1px solid var(--button-border-color);
+    border-radius: 10px;
+}
+
+.hint_navbar div {
+    margin: 0 0;
+    padding: 10px;
+    color: #3a3a3c;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.selected {
+    background: var(--label-color);
+    color: var(--button-border-color);
 }
