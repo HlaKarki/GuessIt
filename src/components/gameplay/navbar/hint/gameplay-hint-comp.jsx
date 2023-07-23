@@ -16,7 +16,7 @@ const Hint = ( {word, definitions, synonyms, antonyms} ) => {
             </button>
             {showHint && (
                 <>
-                    <HintMessage word={word} definitions={definitions} synonyms={synonyms} antonyms={antonyms}/>
+                    <HintMessage word={word} fullDef={definitions} synonyms={synonyms} antonyms={antonyms}/>
                     <div className={"modal-backdrop"} onClick={() => handleShowHint()}></div>
                 </>
             )}
