@@ -78,6 +78,7 @@ export const gameplay_functions = (handleShowAlert, handleMessageTitle) => {
                 else if (event.key === "Backspace") {
                     if (colIndex >= 0) {
                         document.getElementById(`input_${rowIndex}${colIndex}`).textContent = ""
+                        document.getElementById(`input_${rowIndex}${colIndex}`).classList.remove("scale-up-animation")
                         colIndex -= 1
                     }
                 }
