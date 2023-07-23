@@ -17,3 +17,23 @@
     background: var(--label-color);
     color: var(--button-border-color);
 }
+
+.get-definition {
+    display: flex;
+    align-items: center;
+}
+
+.hint-get-button, .hint-next-button {
+    background: none;
+    border: 1px solid var(--label-color);
+    border-radius: 10px;
+    padding: 5px;
+    font-family: inherit;
+    color: white;
+    cursor: pointer;
+}
+
+.hint-get-button:hover, .hint-next-button:hover {
+    background-color: var(--label-color);
+    color: black;
+}
