@@ -12,10 +12,10 @@ export const getChosenWord = GetWord()
     })
     .catch((error) => {throw error});
 
-export const gameplay_functions = (handleShowAlert, handleMessageTitle) => {
+export const gameplay_functions = (handleLoading, handleShowAlert, handleMessageTitle) => {
     getChosenWord
         .then(chosen => {
-            // setChosen(res.word)
+            handleLoading()
             let rowIndex = 0
             let colIndex = -1
             window.addEventListener('keydown', (event) => {
@@ -24,6 +24,9 @@ export const gameplay_functions = (handleShowAlert, handleMessageTitle) => {
                         colIndex += 1
                         document.getElementById(`input_${rowIndex}${colIndex}`).textContent = event.key.toUpperCase()
                         document.getElementById(`input_${rowIndex}${colIndex}`).classList.add("scale-up-animation")
+                        if ('vibrate' in navigator || 'webkitVibrate' in navigator) {
+                            navigator.vibrate(75);
+                        }
                     }
                 }
                 else if (event.key === "Enter") {
