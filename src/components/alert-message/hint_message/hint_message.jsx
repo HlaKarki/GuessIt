@@ -65,7 +65,7 @@ const HintMessage = ( {word, fullDef, synonyms, antonyms} ) => {
 
     return (
         <div className={"alert_message fade-in-animation"}>
-            <div>Available points: {points} pts</div>
+            <div className={"hint-points-available"}>Available points: {points} pts</div>
             <div className={"hint_navbar"}>
                 <div className={`hint_definitions ${selected === "Definitions" ? 'selected' : ''}`} onClick={() => {
                     handleGetWhat("Definitions");
@@ -84,7 +84,7 @@ const HintMessage = ( {word, fullDef, synonyms, antonyms} ) => {
             {/************* Definitions ****************/}
             {(getWhat === "Definitions" && !showDef) && (
                 <div className={"get-definition"}>
-                    <button className={"hint-get-button"} onClick={() => {
+                    <button className={"hint-get-def-button"} onClick={() => {
                         handleDefinition()
                         handlePoints(-DEF_POINTS)
                     }}>
@@ -94,14 +94,14 @@ const HintMessage = ( {word, fullDef, synonyms, antonyms} ) => {
             )}
             {(getWhat === "Definitions" && showDef) && (
                 <>
-                    <div>"{definitions[definitionIndex]}"</div>
+                    <div className={"hint-definition"}>" {definitions[definitionIndex]} "</div>
                     {
                         (doneDef && definitionIndex === 1) &&
                         <img src={backIcon} alt={"see previous definition"} style={{width:'20px', height:'20px', alignItems:'center', marginRight:'10px'}} onClick={prevDefinition}/>
                     }
                     {
                         (!doneDef) &&
-                        <div>
+                        <>
                             {
                                 (definitionIndex < (definitions.length-1) && !doneDef) &&
                                 <button className={"hint-next-button"} onClick={() => {
@@ -111,8 +111,7 @@ const HintMessage = ( {word, fullDef, synonyms, antonyms} ) => {
                                     Another definition: {DEF_POINTS} pts
                                 </button>
                             }
-                        </div>
-
+                        </>
                     }
                     {
                         (doneDef && definitionIndex === 0) &&
