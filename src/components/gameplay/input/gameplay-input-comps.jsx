@@ -2,6 +2,7 @@ import { useState } from "react"
 import './gameplay-input-comps.css'
 import {gameplay_functions} from "../gameplay_functions";
 import { WinLoseMessage } from "../../alert-message/win_lose_message/win_lose_message";
+import Loading from "../../loading/loading";
 
 const EmptyInputLabel = ({ value, row, col }) => <label className="input-label" id={`input_${row}${col}`}>{value}</label>
 
@@ -16,7 +17,11 @@ const EmptyInputSetUp = () => {
         setMessageTitle(message)
     }
 
-    gameplay_functions(handleShowWinLose, handleMessageTitle)
+    const [isLoading, setLoading] = useState(true)
+    const handleLoading = () => {
+        setLoading(false)
+    }
+    gameplay_functions(handleLoading, handleShowWinLose, handleMessageTitle)
 
     return (
         <div className={"inputs"}>
@@ -33,7 +38,10 @@ const EmptyInputSetUp = () => {
                     <div className={"modal-backdrop"} onClick={() => handleShowWinLose()}></div>
                 </>
             )}
-            <div></div>
+            {
+                (isLoading) &&
+                <Loading top={50} left={45}/>
+            }
         </div>
     )
 }
