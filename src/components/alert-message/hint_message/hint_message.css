@@ -18,17 +18,22 @@
     color: var(--button-border-color);
 }
 
+.hint-definition {
+    margin: 0 20px;
+}
+
 .get-definition {
     display: flex;
     align-items: center;
 }
 
-.hint-get-button, .hint-next-button {
+.hint-get-def-button, .hint-next-button {
     background: none;
     border: 1px solid var(--label-color);
     border-radius: 10px;
     padding: 5px;
     font-family: inherit;
+    font-size: 1rem;
     color: white;
     cursor: pointer;
 }
