@@ -16,3 +16,25 @@
     width: 20rem;
     height: 15rem;
 }
+
+.yes-no-buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+}
+
+.yes-button, .no-button {
+    border: 1px solid var(--button-border-color);
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    background: none;
+    color: var(--label-color);
+    font-family: inherit;
+    font-size: 1rem;
+}
+
+.yes-button:hover, .no-button:hover {
+    background-color: var(--label-color);
+    color: black;
+}
