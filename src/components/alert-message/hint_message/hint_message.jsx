@@ -2,16 +2,14 @@ import '../alert_message.css'
 import './hint_message.css'
 import {useState} from "react";
 import backIcon from '../../../assets/backIcon.png'
-const HintMessage = ( {word, fullDef, synonyms, antonyms} ) => {
-    // debug
-    // console.log("synonyms: ", synonyms)
-    // console.log("antonyms: ", antonyms)
-    const definitions = fullDef.length > 2 ? [fullDef[0], fullDef[1]] : fullDef;
+import { usePoints } from "../../../PointsContext";
 
+const HintMessage = ( {word, fullDef, synonyms, antonyms} ) => {
+    const definitions = fullDef.length > 2 ? [fullDef[0], fullDef[1]] : fullDef;
     // -----
     const DEF_POINTS = 5
     const SYNS_ANTS_POINTS = 1
-    const [points, setPoints] = useState(10)
+    const [points, setPoints] = usePoints()
     const [definitionIndex, setDefinitionIndex] = useState(-1)
     const [synonymIndex, setSynonymIndex] = useState(-1)
     const [antonymIndex, setAntonymIndex] = useState(-1)
@@ -22,13 +20,10 @@ const HintMessage = ( {word, fullDef, synonyms, antonyms} ) => {
     const [getWhat, setGetWhat] = useState("Definitions")
     const [selected, setSelected] = useState("Definitions")
 
-    const handlePoints = (pts) => {
-        setPoints( (prevPts) => (prevPts + pts))
-    }
+    const handlePoints = (pts) => setPoints((prevPts) => prevPts+pts)
 
     const handleDefinition = () => {
         setShowDef(true)
-
         setDefinitionIndex((prevIndex) => {
             if (prevIndex === 0){
                 setDoneDef(true)
@@ -38,24 +33,19 @@ const HintMessage = ( {word, fullDef, synonyms, antonyms} ) => {
     }
 
     const prevDefinition = () => {
-        // setDoneDef(true)
         setDefinitionIndex(0)
     }
-
     const nextDefinition = () => {
         setDefinitionIndex(1)
     }
-
     const handleSynonym = () => {
         setShowSyns(true)
         setSynonymIndex((prevIndex) => (prevIndex + 1) % synonyms.length)
     }
-
     const handleAntonym = () => {
         setShowAnts(true)
         setAntonymIndex((prevIndex) => (prevIndex + 1) % antonyms.length)
     }
-
     const handleGetWhat = (getThis) => {
         setGetWhat(getThis)
     }
@@ -105,7 +95,6 @@ const HintMessage = ( {word, fullDef, synonyms, antonyms} ) => {
                             {
                                 (definitionIndex < (definitions.length-1) && !doneDef) &&
                                 <button className={"hint-next-button"} onClick={() => {
-                                    handleDefinition()
                                     handlePoints(-DEF_POINTS)
                                 }}>
                                     Another definition: {DEF_POINTS} pts
@@ -151,7 +140,7 @@ const HintMessage = ( {word, fullDef, synonyms, antonyms} ) => {
                     handleAntonym()
                     handlePoints(-SYNS_ANTS_POINTS)
                 }}>
-                    Reveal a antonym: {SYNS_ANTS_POINTS} pt
+                    Reveal an antonym: {SYNS_ANTS_POINTS} pt
                 </button>
             )}
             {(getWhat === "Antonyms" && showAnts && (antonyms.length !== 0 && antonyms[0] !== "")) && (
